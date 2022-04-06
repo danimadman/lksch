@@ -1,0 +1,81 @@
+/*-----------------------------------------------------------------------------------------------------------------*/
+/*------------------------------------------------------KENDO------------------------------------------------------*/
+/*-----------------------------------------------------------------------------------------------------------------*/
+
+.k-input {
+    font-size: 17px !important;
+    /*font-weight: 300;*/
+}
+.k-input-value-text {
+    font-size: 17px !important;
+}
+.k-label {
+    /*color: #b3b3b3;*/
+    color: #858585;
+    font-size: 17px;
+}
+kendo-formerror {
+    font-size: 15px !important;
+}
+.k-link {
+    font-size: 16px !important;
+}
+
+/*---------------------------------------------------KENDO TEXTAREA---------------------------------------------------*/
+
+kendo-textarea textarea {
+    min-height: 34px;
+}
+
+/*-----------------------------------------------------KENDO CHAT-----------------------------------------------------*/
+
+kendo-chat .k-message-box {
+    border-width: 0 0 1px 0 !important;
+}
+
+kendo-chat .k-alt .k-bubble {
+    border-color: #61B5E4 !important;
+    color: #fff;
+    background-color: #61B5E4 !important;
+    box-shadow: 0 1px 2px #61b5e4;
+}
+
+kendo-chat .k-alt .k-state-selected .k-bubble {
+    box-shadow: 0 3px 10px #61b5e4 !important;
+}
+
+/*-----------------------------------------------------KENDO GRID-----------------------------------------------------*/
+
+[role="columnheader"] {
+    text-align: center !important;
+}
+[role="columnheader"] .k-link {
+    display: flex;
+    justify-content: center;
+}
+.k-header {
+    font-size: 16px !important;
+}
+.k-grid-table td {
+    font-size: 16px !important;
+}
+
+/*---------------------------------------------------KENDO BUTTON-----------------------------------------------------*/
+
+[role="button"].k-button {
+    border-color: #cfcfcfa1;
+}
+.k-button-text {
+    font-size: 16px !important;
+}
+
+/*------------------------------------------------KENDO NOTIFICATION--------------------------------------------------*/
+
+.k-notification-wrap {
+    align-items: center;
+}
+.k-notification-content {
+    font-family: Calibri,sans-serif;
+    /*font-weight: lighter;*/
+    font-size: 16px;
+}

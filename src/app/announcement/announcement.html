@@ -1,0 +1,9 @@
+<div class="main-block">
+  <h1>{{announcement.title}}</h1>
+  <div class="announcement-author">
+    {{announcement.dateAdd == null ? '' : announcement.dateAdd.toLocaleTimeString("ru-RU")}}
+    {{announcement.dateAdd == null ? '' : announcement.dateAdd.toLocaleDateString("ru-RU")}}
+  </div>
+  <div class="announcement-annotation" [innerHTML]="announcement.text"></div>
+  <div class="announcement-link"><a [routerLink]="announcementUrl">Вернуться к списку</a></div>
+</div>

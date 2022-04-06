@@ -1,0 +1,79 @@
+﻿<div id="achievements-component" class="main-block" *ngIf="loaded">
+    <h1>Достижение</h1>
+    <form class="k-form" [formGroup]="form">
+        <kendo-formfield>
+            <kendo-label [for]="type" text="Тип достижения"></kendo-label>
+            <kendo-dropdownlist #type [data]="achievementTypes" [(ngModel)]="achievement.type"
+                                formControlName="type" required textField="name" valueField="id"
+                                [readonly]="!achievement?.allowEdit">
+            </kendo-dropdownlist>
+            <kendo-formerror *ngIf="form.controls.type.errors?.required">Обязательное поле
+            </kendo-formerror>
+        </kendo-formfield>
+        <kendo-formfield>
+            <kendo-label [for]="event" text="Мероприятие"></kendo-label>
+            <kendo-textarea #event [(ngModel)]="achievement.event" required formControlName="event"
+                            maxlength="1024" [readonly]="!achievement?.allowEdit" resizable="vertical">
+            </kendo-textarea>
+            <kendo-formerror *ngIf="form.controls.event.errors?.required">Обязательное поле
+            </kendo-formerror>
+            <kendo-formerror *ngIf="form.controls.event.errors?.maxLength">Максимальная длина строки 1024 символов
+            </kendo-formerror>
+        </kendo-formfield>
+        <kendo-formfield>
+            <kendo-label [for]="title" text="Название достижения"></kendo-label>
+            <kendo-textarea #title [(ngModel)]="achievement.title" required formControlName="title"
+                            maxlength="1024" [readonly]="!achievement?.allowEdit" resizable="vertical">
+            </kendo-textarea>
+            <kendo-formerror *ngIf="form.controls.title.errors?.required">Обязательное поле
+            </kendo-formerror>
+            <kendo-formerror *ngIf="form.controls.title.errors?.maxLength">Максимальная длина строки 1024 символов
+            </kendo-formerror>
+        </kendo-formfield>
+        <kendo-formfield>
+            <kendo-label [for]="yearOfReceipt" text="Год получения"></kendo-label>
+            <kendo-numerictextbox #yearOfReceipt [min]="1900" [(ngModel)]="achievement.yearOfReceipt" [autoCorrect]="true" 
+                                  format="n" step="0" required formControlName="yearOfReceipt" [readonly]="!achievement?.allowEdit">
+            </kendo-numerictextbox>
+            <kendo-formerror *ngIf="form.controls.event.errors?.required">Обязательное поле
+            </kendo-formerror>
+        </kendo-formfield>
+        <kendo-formfield>
+            <kendo-label text="Подтверждающий документ"></kendo-label>
+            <div class="k-display-flex k-flex-column k-mb-1">
+                <section *ngFor="let file of achievement.files">
+                    <button kendoButton (click)="downloadFile($any(file))" fillMode="flat" icon="file">
+                        {{file.fileName}}
+                    </button>
+                    <button *ngIf="achievement?.allowEdit" kendoButton fillMode="flat" icon="delete" (click)="deleteFile(file.id)">
+                    </button>
+                </section>
+            </div>
+            <kendo-fileselect [restrictions]="restrictions" [(ngModel)]="uploads" 
+                              [ngModelOptions]="{standalone: true}" *ngIf="achievement?.allowEdit">
+            </kendo-fileselect>
+        </kendo-formfield>
+        <kendo-formfield class="k-display-flex k-align-items-center">
+            <kendo-label text="Статус"></kendo-label>
+            <span class="k-ml-5" style="font-size: 18px;">{{achievement?.status?.name}}</span>
+        </kendo-formfield>
+        <div class="k-display-flex k-justify-content-between k-mt-3">
+            <button kendoButton fillMode="solid" (click)="cancel()" class="k-display-flex k-flex-nowrap k-mr-1">{{'Отмена'}}</button>
+
+            <div class="available-statuses k-display-flex k-justify-content-end">
+                <button *ngIf="achievement?.allowEdit && achievement?.id > 0" kendoButton fillMode="solid" class="k-ml-1 k-mr-1"
+                        (click)="deleteAchievement($any(achievement?.id))">{{'Удалить'}}</button>
+                <button *ngIf="achievement?.allowEdit" kendoButton fillMode="solid" themeColor="primary" class="k-ml-1 k-mr-1"
+                    (click)="save($any(achievement?.status?.id))">{{achievement.id > 0 ? 'Сохранить' : 'Сохранить как черновик'}}</button>
+                <button *ngFor="let availableStatus of achievement.availableStatuses" kendoButton 
+                        fillMode="solid" themeColor="primary" class="k-ml-1 k-mr-1" (click)="save($any(availableStatus.id))">
+                    {{getBtnStatusName(availableStatus.id)}}
+                </button>
+            </div>
+        </div>
+    </form>
+    <kendo-chat #chat [messages]="comments" [user]="currentUser" (sendMessage)="sendComment($event)"
+                *ngIf="achievement?.id > 0" class="k-mt-2">
+    </kendo-chat>
+    <div kendoDialogContainer></div>
+</div>

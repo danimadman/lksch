@@ -1,0 +1,211 @@
+<div class="main-block">
+    <h1>Мероприятие</h1>
+    <form class="k-form" [formGroup]="form">
+        <kendo-formfield>
+            <kendo-label [for]="eventType" text="Тип мероприятия"></kendo-label>
+            <kendo-dropdownlist #eventType [data]="eventTypes" [(ngModel)]="eventDetails.eventType"
+                                formControlName="eventType" required placeholder="Выберите тип мероприятия"
+                                textField="name" valueField="id" [readonly]="!allowEdit">
+            </kendo-dropdownlist>
+            <kendo-formerror *ngIf="form.controls.eventType.errors?.required">Обязательное поле
+            </kendo-formerror>
+        </kendo-formfield>
+        <kendo-formfield>
+            <kendo-label [for]="name" text="Название"></kendo-label>
+            <kendo-textarea #name [(ngModel)]="eventDetails.name" required formControlName="name"
+                   maxlength="1024" [readonly]="!allowEdit" placeholder="Укажите название мероприятия">
+            </kendo-textarea>
+            <kendo-formerror *ngIf="form.controls.name.errors?.required">Обязательное поле
+            </kendo-formerror>
+            <kendo-formerror *ngIf="form.controls.name.errors?.maxLength">Максимальная длина строки 1024 символов
+            </kendo-formerror>
+        </kendo-formfield>
+        <kendo-formfield>
+            <kendo-label [for]="description" text="Описание"></kendo-label>
+            <kendo-textarea #description [(ngModel)]="eventDetails.description" required formControlName="description"
+                            maxlength="1024" [readonly]="!allowEdit" resizable="vertical"
+                            placeholder="">
+            </kendo-textarea>
+            <kendo-formerror *ngIf="form.controls.description.errors?.required">Обязательное поле
+            </kendo-formerror>
+            <kendo-formerror *ngIf="form.controls.description.errors?.maxLength">Максимальная длина строки 1024 символов
+            </kendo-formerror>
+        </kendo-formfield>
+        <kendo-formfield>
+            <kendo-label [for]="organizers" text="Организаторы"></kendo-label>
+            <kendo-textarea #organizers [(ngModel)]="eventDetails.organizers" required formControlName="organizers"
+                            maxlength="1024" [readonly]="!allowEdit" resizable="vertical"
+                            placeholder="Заполните информацию об организаторах данного мероприятия">
+            </kendo-textarea>
+            <kendo-formerror *ngIf="form.controls.organizers.errors?.required">Обязательное поле
+            </kendo-formerror>
+            <kendo-formerror *ngIf="form.controls.organizers.errors?.maxLength">Максимальная длина строки 1024 символов
+            </kendo-formerror>
+        </kendo-formfield>
+        <kendo-formfield>
+            <kendo-label [for]="location" text="Место проведения и контакты"></kendo-label>
+            <kendo-textarea #location [(ngModel)]="eventDetails.location" required formControlName="location"
+                            maxlength="1024" [readonly]="!allowEdit" resizable="vertical"
+                            placeholder="Укажите место проведения и контакты">
+            </kendo-textarea>
+            <kendo-formerror *ngIf="form.controls.location.errors?.required">Обязательное поле
+            </kendo-formerror>
+            <kendo-formerror *ngIf="form.controls.location.errors?.maxLength">Максимальная длина строки 1024 символов
+            </kendo-formerror>
+        </kendo-formfield>
+        <kendo-formfield>
+            <kendo-label text="Срок" class="k-mr-2"></kendo-label>
+            <div class="k-display-flex k-align-items-center">
+                <kendo-label [for]="dateBegin" text="с" class="k-mr-2"></kendo-label>
+                <kendo-datepicker #dateBegin [(ngModel)]="eventDetails.dateBegin" required format="dd.MM.yyyy"
+                                 formControlName="dateBegin" style="width: 165px" [readonly]="!allowEdit">
+                </kendo-datepicker>
+                <kendo-label [for]="dateEnd" text="по" class="k-mr-2 k-ml-2"></kendo-label>
+                <kendo-datepicker #dateEnd [(ngModel)]="eventDetails.dateEnd" required format="dd.MM.yyyy"
+                                 formControlName="dateEnd" style="width: 165px" [readonly]="!allowEdit">
+                </kendo-datepicker>
+            </div>
+            <kendo-formerror *ngIf="form.controls.dateBegin.errors?.required ||
+                                    form.controls.dateEnd.errors?.required">
+                Заполните сроки
+            </kendo-formerror>
+        </kendo-formfield>
+        <kendo-formfield>
+            <kendo-label [for]="status" text="Статус"></kendo-label>
+            <kendo-dropdownlist #status [data]="eventStatuses" [(ngModel)]="eventDetails.status"
+                                formControlName="status" required [readonly]="!allowEdit"
+                                textField="name" valueField="id" placeholder="Выберите статус">
+            </kendo-dropdownlist>
+            <kendo-formerror *ngIf="form.controls.status.errors?.required">Обязательное поле
+            </kendo-formerror>
+        </kendo-formfield>
+        <div class="k-mt-3" *ngIf="!isAdmin">
+            <kendo-label text="Статус записи"></kendo-label>
+            <dd class="font-size-18">{{studentEventStatus?.name ?? ''}}</dd>
+        </div>
+        <div class="k-display-flex k-justify-content-between k-mt-3">
+            <button kendoButton fillMode="solid" (click)="cancel()" class="k-display-flex k-flex-nowrap k-mr-1">
+                Отмена
+            </button>
+            <button *ngIf="isAdmin" kendoButton fillMode="solid" themeColor="primary" class="k-ml-1 k-mr-1"
+                    (click)="saveEvent()">
+                Сохранить
+            </button>
+            <button *ngIf="allowEventRegister && studentEventStatus == null" kendoButton fillMode="solid"
+                    themeColor="primary" class="k-ml-1 k-mr-1" (click)="registerEvent()">Записаться
+            </button>
+        </div>
+    </form>
+    <kendo-tabstrip class="k-mt-3" (tabSelect)="onTabSelect($event)" *ngIf="eventDetails?.id != null">
+        <kendo-tabstrip-tab title="Материалы курса" selected="true">
+            <ng-template kendoTabContent>
+                <div class="k-display-flex k-flex-column">
+                    <section *ngFor="let file of eventFiles">
+                        <button kendoButton (click)="downloadFile(file)" fillMode="flat" icon="file">
+                            {{file.fileName}}
+                        </button>
+                        <button *ngIf="allowEdit" kendoButton fillMode="flat" icon="delete" (click)="deleteFile(file.id)">
+                        </button>
+                    </section>
+                    <form class="k-mt-2">
+                        <kendo-fileselect [restrictions]="restrictions" [(ngModel)]="eventFilesAdd" *ngIf="allowEdit">
+                        </kendo-fileselect>
+                        <button *ngIf="allowEdit" kendoButton themeColor="primary" class="k-mt-2 k-float-right"
+                                (click)="saveEventFiles()">Сохранить
+                        </button>
+                    </form>
+                </div>
+            </ng-template>
+        </kendo-tabstrip-tab>
+        <kendo-tabstrip-tab title="Записавшиеся" *ngIf="isAdmin">
+            <ng-template kendoTabContent>
+                <kendo-grid [pageSize]="20" [pageable]="true" [sortable]="true" [columnMenu]="{ filter: true }"
+                            [kendoGridBinding]="studentEvents" style="width: 100%;" [filter]="gridState.filter"
+                            (remove)="removeStudentEvent($event)">
+                    <kendo-grid-column field="user.firstName" title="№" [resizable]="true" filter="text"
+                                       width="32" columnMenu="false">
+                        <ng-template kendoGridCellTemplate let-rowIndex="rowIndex">
+                            {{rowIndex + 1}}
+                        </ng-template>
+                    </kendo-grid-column>
+                    <kendo-grid-column field="user.firstName" title="ФИО" [resizable]="true" filter="text">
+                        <ng-template kendoGridCellTemplate let-dataItem>
+                            {{dataItem.user?.lastName + " " + dataItem.user?.firstName + " " + (dataItem.user?.middleName ?? '')}}
+                        </ng-template>
+                    </kendo-grid-column>
+                    <kendo-grid-column title="Статус записи" [resizable]="true">
+                        <ng-template kendoGridCellTemplate let-dataItem>
+                            <kendo-dropdownlist [data]="studentEventStatuses" [value]="dataItem.status"
+                                                [readonly]="!allowEdit" textField="name" valueField="id"
+                                                (selectionChange)="dataStateChange($event, $any(dataItem))">
+                            </kendo-dropdownlist>
+                        </ng-template>
+                    </kendo-grid-column>
+                    <kendo-grid-column field="user.phoneNumber" title="Контактный телефон" [resizable]="true"
+                                       filter="text" [hidden]="true">
+                    </kendo-grid-column>
+                    <kendo-grid-column field="user.email" title="E-mail" [resizable]="true" filter="text"
+                                       [hidden]="true">
+                    </kendo-grid-column>
+                    <kendo-grid-column field="user.birthday" title="Дата рождения" [resizable]="true" filter="date"
+                                       [hidden]="true">
+                    </kendo-grid-column>
+                    <kendo-grid-command-column width="57" *ngIf="allowEdit">
+                        <ng-template kendoGridCellTemplate>
+                            <button kendoGridRemoveCommand icon="delete" fillMode="clear"></button>
+                        </ng-template>
+                    </kendo-grid-command-column>
+                </kendo-grid>
+            </ng-template>
+        </kendo-tabstrip-tab>
+        <kendo-tabstrip-tab title="Новости и объявления">
+            <ng-template kendoTabContent>
+                <div *ngIf="!showEventAdDetails">
+                    <button *ngIf="allowEdit" kendoButton fillMode="solid" themeColor="primary"
+                            class="k-mb-2 k-float-right" (click)="addEventAd()">Добавить
+                    </button>
+                    <kendo-grid [pageSize]="20" [pageable]="true" [sortable]="true" [columnMenu]="{ filter: true }"
+                                [kendoGridBinding]="eventAds" style="width: 100%;" [filter]="gridState.filter"
+                                (remove)="removeEventAd($event)"
+                                (edit)="eventAdDetails($event)"
+                                (cellClick)="eventAdDetails($event)">
+                        <kendo-grid-column field="dateAdd" title="Дата" [resizable]="true" filter="date"
+                                           format="dd.MM.yyyy HH:mm">
+                        </kendo-grid-column>
+                        <kendo-grid-column field="title" title="Объявление" [resizable]="true" filter="text">
+                        </kendo-grid-column>
+                        <kendo-grid-command-column width="100" *ngIf="allowEdit">
+                            <ng-template kendoGridCellTemplate>
+                                <button kendoGridEditCommand icon="edit" fillMode="clear"></button>
+                                <button kendoGridRemoveCommand icon="delete" fillMode="clear"></button>
+                            </ng-template>
+                        </kendo-grid-command-column>
+                    </kendo-grid>
+                </div>
+                <div *ngIf="showEventAdDetails">
+                    <form class="k-form" [formGroup]="formEventAd">
+                        <kendo-label [for]="title" text="Заголовок"></kendo-label>
+                        <input #title kendoTextBox [(ngModel)]="eventAd.title" required formControlName="title"
+                               maxlength="512" [readonly]="!allowEdit"/>
+                        <kendo-label [for]="annotation" text="Аннотация"></kendo-label>
+                        <kendo-textarea #annotation [(ngModel)]="eventAd.annotation" required formControlName="annotation"
+                                        maxlength="1024" [readonly]="!allowEdit" resizable="vertical">
+                        </kendo-textarea>
+                        <kendo-label text="Текст новости/объявления"></kendo-label>
+                        <kendo-editor [(ngModel)]="eventAd.text" formControlName="text" required
+                                      [readonly]="!allowEdit" *ngIf="allowEdit">
+                        </kendo-editor>
+                        <div class="k-block" [innerHTML]="eventAd.text" *ngIf="!allowEdit"></div>
+                        <div class="k-mt-2 k-display-flex k-justify-content-between">
+                            <button kendoButton fillMode="solid" (click)="closeEventAdDetails()">Отмена</button>
+                            <button *ngIf="allowEdit" kendoButton fillMode="solid" themeColor="primary"
+                                    (click)="saveEventAd()">Сохранить
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </ng-template>
+        </kendo-tabstrip-tab>
+    </kendo-tabstrip>
+    <div kendoDialogContainer></div>
+</div>

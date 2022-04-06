@@ -1,0 +1,15 @@
+<div class="main-block">
+  <h1>Объявления</h1>
+  <div class="announcement-item" *ngFor="let item of announcements">
+    <div class="announcement-caption">
+      <a [routerLink]="announcementsUrl + '/' + item.announcementType + '/' + item.id">{{item.title}}</a>
+    </div>
+    <div class="announcement-author">
+      {{item.dateAdd.toLocaleTimeString("ru-RU")}} {{item.dateAdd.toLocaleDateString("ru-RU")}}
+    </div>
+    <div class="announcement-annotation">{{item.annotation}}</div>
+    <div class="announcement-link">
+      <a [routerLink]="announcementsUrl + '/' + item.announcementType + '/' + item.id">Читать далее</a>
+    </div>
+  </div>
+</div>

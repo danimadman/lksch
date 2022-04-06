@@ -1,0 +1,26 @@
+﻿<div class="k-display-flex k-flex-nowrap">
+    <section id="left-menu" class="main-block">
+        <ul class="menu-list">
+            <li class="menu-list-item"><a [routerLink]="settings.homeUrl" routerLinkActive="selected">
+                Профиль</a></li>
+            <li class="menu-list-item"><a [routerLink]="settings.achievementsUrl" routerLinkActive="selected">
+                {{isAdmin ? 'Достижения' : 'Мои достижения'}}</a></li>
+            <li class="menu-list-item">
+                <a [routerLink]="settings.registeredEventsUrl" routerLinkActive="selected"
+                   *ngIf="!isAdmin">Мои мероприятия</a>
+                <a [routerLink]="settings.eventsUrl" routerLinkActive="selected"
+                   *ngIf="isAdmin">Мероприятия</a>
+            </li>
+            <li class="menu-list-item">
+                <a [routerLink]="settings.studentCoursesUrl" routerLinkActive="selected"
+                   *ngIf="!isAdmin">Мои курсы</a>
+                <a [routerLink]="settings.coursesUrl" routerLinkActive="selected"
+                   *ngIf="isAdmin">Курсы</a>
+            </li>
+            <li class="menu-list-item"><a (click)="logout()">Выход</a></li>
+        </ul>
+    </section>
+    <section id="content-block">
+        <router-outlet></router-outlet>
+    </section>
+</div>

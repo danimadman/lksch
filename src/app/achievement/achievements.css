@@ -1,0 +1,15 @@
+kendo-chat {
+    flex-direction: column-reverse !important;
+    margin: 0;
+    width: 100%;
+    max-width: 847px !important;
+}
+
+@media (min-width: 767px) {
+    kendo-chat {
+        width: 100%;
+    }
+}
+@media (min-width: 991px) {
+
+}

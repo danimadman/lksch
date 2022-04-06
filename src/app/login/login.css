@@ -1,0 +1,23 @@
+﻿.login-form {
+    width: 100%;
+    max-width: 450px;
+    margin-top: 10px;
+}
+.login-form h1, .login-form .h1 {
+    font-size: 22px;
+}
+.login-link {
+    font-size: 17px;
+    text-decoration: underline;
+    color: #333;
+}
+@media (min-width: 767px) {
+    .login-form {
+        margin-top: 0;
+    }
+}
+@media (min-width: 991px) {
+    .login-form {
+        margin-top: 0;
+    }
+}

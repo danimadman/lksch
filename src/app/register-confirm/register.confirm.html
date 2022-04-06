@@ -1,0 +1,9 @@
+﻿<div class="k-display-flex k-justify-content-center">
+    <div class="main-block register-form">
+        <h1 class="k-mb-4 text-center">Подтверждение e-mail</h1>
+        <p class="text-center" *ngIf="!successConfirm; else tmplSuccess">{{message}}</p>
+    </div>
+</div>
+<ng-template #tmplSuccess>
+    <p class="text-center">Ваш E-mail успешно подтвержден. Перейдите <a [routerLink]="settings.loginUrl">по ссылке для входа</a></p>
+</ng-template>

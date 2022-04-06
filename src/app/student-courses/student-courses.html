@@ -1,0 +1,23 @@
+<div class="main-block">
+  <h1>Мои курсы</h1>
+  <button kendoButton fillMode="solid" themeColor="primary" class="k-mb-3" (click)="allCourses()">
+    Все курсы
+  </button>
+  <kendo-grid [pageSize]="20" [pageable]="true" [sortable]="true" [columnMenu]="{ filter: true }"
+              [kendoGridBinding]="courses" style="width: 100%;" (cellClick)="cellClick($event)" [loading]="gridLoading">
+    <kendo-grid-column field="name" title="Название" [resizable]="true" filter="text">
+    </kendo-grid-column>
+    <kendo-grid-column title="Срок проведения" [resizable]="true" filter="false">
+      <ng-template kendoGridCellTemplate let-dataItem>
+        с {{dataItem.dateBegin.toLocaleDateString("ru-RU")}}
+        по {{dataItem.dateEnd.toLocaleDateString("ru-RU")}}
+      </ng-template>
+    </kendo-grid-column>
+    <kendo-grid-column field="academicHours" title="Длительность" [resizable]="true" filter="numeric">
+    </kendo-grid-column>
+    <kendo-grid-column field="status.name" title="Статус курса" [resizable]="true" filter="text">
+    </kendo-grid-column>
+    <kendo-grid-column field="studentCourseStatus.name" title="Статус записи" [resizable]="true" filter="text">
+    </kendo-grid-column>
+  </kendo-grid>
+</div>

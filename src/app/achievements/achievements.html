@@ -1,0 +1,38 @@
+﻿<div id="achievements-component" class="main-block">
+    <h1>{{isAdmin ? 'Все достижения' : 'Мои достижения'}}</h1>
+<!--    <section class="filter k-mb-3" *ngIf="isAdmin">-->
+<!--        <kendo-label [for]="fType" text="Тип достижения"></kendo-label>-->
+<!--        <kendo-combobox #fType [data]="achievementTypes" textField="name" valueField="id">-->
+<!--        </kendo-combobox>-->
+<!--        <kendo-label [for]="fStatuses" text="Статус достижения"></kendo-label>-->
+<!--        <kendo-combobox #fStatuses [data]="statuses" textField="name" valueField="id">-->
+<!--        </kendo-combobox>-->
+<!--        <kendo-label [for]="fTitle" text="Название достижения"></kendo-label>-->
+<!--        <input kendoTextBox #fTitle/>-->
+<!--        <kendo-label [for]="fEvent" text="Мероприятие"></kendo-label>-->
+<!--        <input kendoTextBox #fEvent  />-->
+<!--        <kendo-label [for]="fUserFullName" text="ФИО школьника"></kendo-label>-->
+<!--        <input kendoTextBox #fUserFullName/>-->
+<!--        <button kendoButton fillMode="solid" class="k-mt-2" -->
+<!--                (click)="filter()">Поиск-->
+<!--        </button>-->
+<!--    </section>-->
+    <button kendoButton fillMode="solid" themeColor="primary" class="k-float-right k-mb-2" 
+            (click)="addAchievement()" *ngIf="!isAdmin">
+        Добавить достижение
+    </button>
+    <kendo-grid [pageSize]="20" [pageable]="true" [sortable]="true" [columnMenu]="{ filter: true }" filterable="true"
+                [kendoGridBinding]="achievements" style="width: 100%;" (cellClick)="cellClick($event)" [loading]="gridLoading">
+        <kendo-grid-column *ngIf="isAdmin" field="userFullName" title="ФИО школьника" [resizable]="true" 
+                           filter="text">
+        </kendo-grid-column>
+        <kendo-grid-column field="title" title="Достижение" [resizable]="true" filter="text">
+        </kendo-grid-column>
+        <kendo-grid-column field="event" title="Мероприятие" [resizable]="true" filter="text">
+        </kendo-grid-column>
+        <kendo-grid-column field="type.name" title="Тип достижения" [resizable]="true" filter="text">
+        </kendo-grid-column>
+        <kendo-grid-column field="status.name" title="Статус" [resizable]="true" filter="text">
+        </kendo-grid-column>
+    </kendo-grid>
+</div>

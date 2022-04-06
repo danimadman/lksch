@@ -1,0 +1,29 @@
+﻿<div class="k-display-flex k-justify-content-center">
+    <div class="main-block login-form">
+        <h1 class="k-mb-4 text-center">Авторизация</h1>
+        <form class="k-form" [formGroup]="form">
+            <kendo-formfield>
+                <input kendoTextBox [(ngModel)]="authModel.login" required type="email" formControlName="login"
+                       placeholder="E-mail" class="text-center"/>
+                <kendo-formerror *ngIf="form.controls.login.errors?.required">Введите электронную почту от своей учётной записи
+                </kendo-formerror>
+                <kendo-formerror *ngIf="form.controls.login.errors?.email">Недействительная электронная почта
+                </kendo-formerror>
+            </kendo-formfield>
+            <kendo-formfield>
+                <input kendoTextBox type="password" [(ngModel)]="authModel.password" formControlName="password"
+                       placeholder="Пароль" class="text-center"/>
+                <kendo-formerror *ngIf="form.controls.password.errors?.required">Заполните пароль от своей учётной записи
+                </kendo-formerror>
+            </kendo-formfield>
+            <div class="k-display-flex k-justify-content-center k-mb-3 k-mt-3">
+                <button class="btn btn-default" (click)="login()">Вход</button>
+                <button class="btn btn-secondary k-ml-1" (click)="registerForm()">Зарегистрироваться</button>
+            </div>
+            <div class="k-display-flex k-align-items-center k-flex-column">
+                <a [routerLink]="settings.forgotPasswordUrl" class="login-link">Забыли пароль?</a>
+                <a [routerLink]="settings.resendEmailConfirmUrl" class="login-link">Заново выслать код подтверждения e-mail</a>
+            </div>
+        </form>
+    </div>
+</div>

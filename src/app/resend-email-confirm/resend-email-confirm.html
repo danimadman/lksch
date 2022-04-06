@@ -1,0 +1,19 @@
+﻿<div class="k-display-flex k-justify-content-center">
+    <div class="main-block login-form">
+        <h1 class="k-mb-4 text-center">Отправить заново код подтверждения учётной записи</h1>
+        <form class="k-form" [formGroup]="form">
+            <p *ngIf="resendEmailConfirm" class="text-center">Код подтверждения E-mail отправлен. Пожалуйста проверьте свой E-mail.</p>
+            <kendo-formfield>
+                <input kendoTextBox [(ngModel)]="resendEmailModel.email" required type="email" formControlName="email"
+                       placeholder="E-mail" class="text-center"/>
+                <kendo-formerror *ngIf="form.controls.email.errors?.required">Введите электронную почту от своей учётной записи
+                </kendo-formerror>
+                <kendo-formerror *ngIf="form.controls.email.errors?.email">Недействительная электронная почта
+                </kendo-formerror>
+            </kendo-formfield>
+            <div class="k-display-flex k-justify-content-center k-mt-3">
+                <button class="btn btn-default k-ml-1" (click)="send()">Отправить</button>
+            </div>
+        </form>
+    </div>
+</div>

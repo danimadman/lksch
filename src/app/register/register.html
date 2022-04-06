@@ -1,0 +1,111 @@
+﻿<div class="k-display-flex k-justify-content-center">
+    <div class="main-block register-form">
+        <ng-container [ngSwitch]="action">
+            <ng-container *ngSwitchCase="'RegisterConfirmation'">
+                <h1 class="k-mb-4 text-center">Подтверждение почты</h1>
+                <p class="text-center">Пожалуйста, проверьте свою почту для подтверждения учетной записи</p>
+            </ng-container>
+            <ng-container *ngSwitchDefault>
+                <h1 class="k-mb-4 text-center">Регистрация нового пользователя</h1>
+                <form class="k-form" [formGroup]="form">
+                    <kendo-formfield>
+                        <kendo-label [for]="lastName" text="Фамилия"></kendo-label>
+                        <input kendoTextBox #lastName required [(ngModel)]="registerModel.lastName" formControlName="lastName"
+                                       maxlength="128" placeholder="Введите свою фамилию"/>
+                        <kendo-formerror *ngIf="form.controls.lastName.errors?.required">Фамилия должна быть заполнена
+                        </kendo-formerror>
+                        <kendo-formerror *ngIf="form.controls.lastName.errors?.maxLength">Максимальная длина 128 символов
+                        </kendo-formerror>
+                    </kendo-formfield>
+                    <kendo-formfield>
+                        <kendo-label [for]="firstName" text="Имя"></kendo-label>
+                        <input kendoTextBox #firstName [(ngModel)]="registerModel.firstName" required formControlName="firstName"
+                               maxlength="128" placeholder="Введите своё имя"/>
+                        <kendo-formerror *ngIf="form.controls.firstName.errors?.required">Имя должно быть заполнено
+                        </kendo-formerror>
+                        <kendo-formerror *ngIf="form.controls.firstName.errors?.maxLength">Максимальная длина 128 символов
+                        </kendo-formerror>
+                    </kendo-formfield>
+                    <kendo-formfield>
+                        <kendo-label [for]="middleName" text="Отчество"></kendo-label>
+                        <input kendoTextBox #middleName [(ngModel)]="registerModel.middleName" formControlName="middleName"
+                               maxlength="128" placeholder="Введите своё отчество (необязательно)"/>
+                        <kendo-formerror *ngIf="form.controls.middleName.errors?.maxLength">Максимальная длина 128 символов
+                        </kendo-formerror>
+                    </kendo-formfield>
+                    <kendo-formfield>
+                        <kendo-label [for]="birthDay" text="Дата рождения"></kendo-label>
+                        <kendo-datepicker #birthDay [(ngModel)]="registerModel.birthDay" required format="dd.MM.yyyy"
+                                         formControlName="birthDay">
+                        </kendo-datepicker>
+                        <kendo-formerror *ngIf="form.controls.birthDay.errors?.required">Дата рождения должна быть заполнена
+                        </kendo-formerror>
+                    </kendo-formfield>
+                    <kendo-formfield>
+                        <kendo-label [for]="isMale" text="Пол"></kendo-label>
+                        <div class="k-block k-display-flex">
+                            <input kendoRadioButton type="radio" #isMale [value]="true" [(ngModel)]="registerModel.isMale"
+                                   required formControlName="isMale"/>
+                            <kendo-label class="k-radio-label k-ml-1 k-mr-2" [for]="isMale" text="Мужской"></kendo-label>
+                            <input kendoRadioButton type="radio" #isFemale [value]="false" [(ngModel)]="registerModel.isMale"
+                                   required formControlName="isMale"/>
+                            <kendo-label class="k-radio-label k-ml-1" [for]="isFemale" text="Женский"></kendo-label>
+                        </div>
+                        <kendo-formerror *ngIf="form.controls.isMale.errors?.required">Пол должен быть заполнен
+                        </kendo-formerror>
+                    </kendo-formfield>
+                    <kendo-formfield>
+                        <kendo-label [for]="email" text="E-mail"></kendo-label>
+                        <input kendoTextBox #email [(ngModel)]="registerModel.email" required type="email" email="true" 
+                                       formControlName="email" placeholder="Введите свою электронную почту"/>
+                        <kendo-formerror *ngIf="form.controls.email.errors?.required">Электронная почта должна быть заполнена
+                        </kendo-formerror>
+                        <kendo-formerror *ngIf="form.controls.email.errors?.email">Недействительная электронная почта
+                        </kendo-formerror>
+                    </kendo-formfield>
+                    <kendo-formfield>
+                        <kendo-label [for]="phoneNumber" text="Контактный телефон"></kendo-label>
+                        <input kendoTextBox #phoneNumber [(ngModel)]="registerModel.phoneNumber" required formControlName="phoneNumber"
+                                       maxlength="128" placeholder="Введите номер телефона"/>
+                        <kendo-formerror *ngIf="form.controls.phoneNumber.errors?.required">Номер телефона должен быть заполнен
+                        </kendo-formerror>
+                        <kendo-formerror *ngIf="form.controls.phoneNumber.errors?.maxLength">Максимальная длина 128 символов
+                        </kendo-formerror>
+                    </kendo-formfield>
+                    <kendo-formfield>
+                        <kendo-label [for]="password" text="Пароль"></kendo-label>
+                        <input kendoTextBox #password type="password" [(ngModel)]="registerModel.password"
+                               formControlName="password" placeholder="Введите пароль"/>
+                        <kendo-formerror *ngIf="form.controls.password.errors?.required">Заполните пароль от своей учётной записи
+                        </kendo-formerror>
+                    </kendo-formfield>
+                    <kendo-formfield>
+                        <kendo-label [for]="passwordConfirm" text="Пароль ещё раз"></kendo-label>
+                        <input kendoTextBox #passwordConfirm type="password" [(ngModel)]="registerModel.passwordConfirm"
+                               formControlName="passwordConfirm" placeholder="Введите пароль ещё раз"/>
+                        <kendo-formerror *ngIf="form.controls.password.errors?.required">Заполните пароль от своей учётной записи
+                        </kendo-formerror>
+                    </kendo-formfield>
+                    <kendo-formfield class="k-display-flex k-flex-nowrap k-mb-3">
+                        <section class="k-display-flex">
+                            <input kendoCheckBox type="checkbox" [(ngModel)]="registerModel.isConsentPersonalData"
+                                   formControlName="isConsentPersonalData" class="k-mt-0 k-mr-2"/>
+                            <div class="k-display-flex;" style="text-align: justify">Согласен с
+                                <a (click)="downloadConsentPersonalData()" style="cursor: pointer">
+                                    политикой обработки персональных данных в ФГБОУ ВО «Приволжский исследовательский медицинский
+                                    университет» Министерства здравоохранения Российской Федерации
+                                </a>
+                            </div>
+                        </section>
+                        <kendo-formerror *ngIf="registerModel.isConsentPersonalData != true">Вы согласны?
+                        </kendo-formerror>
+                    </kendo-formfield>
+                    <div class="k-display-flex k-justify-content-between">
+                        <button class="btn btn-secondary" (click)="cancel()">Отмена</button>
+                        <button class="btn btn-default ml-1" (click)="register()">Регистрация</button>
+                    </div>
+                </form>
+            </ng-container>
+        </ng-container>
+    </div>
+</div>
