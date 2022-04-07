@@ -16,7 +16,9 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.json",
             "aot": true,
-
+            "scripts": [
+              "node_modules/jquery/dist/jquery.min.js"
+            ],
             "styles": [
               {
                 "input": "node_modules/@progress/kendo-theme-default/dist/all.css"

@@ -20,11 +20,9 @@
 #left-menu {
   width: 300px;
   padding: 0;
-  /*position: absolute;*/
   z-index: 1000;
   margin: 0 !important;
   background-color: #2e486e;
-  /*right: 8px;*/
   border-radius: 0;
   display: none;
 }
@@ -66,20 +64,22 @@
   padding-left: 30px;
 }
 .selected {color:red;}
+@media (max-width: 990px) {
+  #left-menu {
+    position: absolute;
+    right: 32px;
+  }
+}
 @media (min-width: 767px) {
   #left-menu {
     margin: 0 !important;
-    /*top: 106px;*/
-    /*right: 32px;*/
   }
 }
 @media (min-width: 991px) {
   #left-menu {
-    /*top: 156px;*/
-    /*left: 32px;*/
     background-color: #f9f9f9;
     border-radius: 4px;
-    display: block;
+    display: block !important;
   }
   #left-menu .menu-list {
     margin-top: 10px;
