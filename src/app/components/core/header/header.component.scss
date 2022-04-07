@@ -1,0 +1,94 @@
+header {
+  background-image: linear-gradient(to right, #355480, #3c6092);
+  padding: 5px 15px;
+}
+header .h1 {
+  font-size: 18px;
+  font-family: "Segoe UI";
+  font-weight: lighter;
+  display: block;
+  text-transform: uppercase;
+  margin: 0;
+}
+header .h2 {
+  font-size: 18px;
+  font-family: "Segoe UI";
+  font-weight: bold;
+  display: block;
+  text-transform: uppercase;
+  margin: 0;
+}
+header .logo-name {
+  padding-left: 20px;
+  color: #f9f9f9;
+}
+header .logo img {
+  max-height: 50px;
+}
+header .btn-clipboard {
+  background-color: #263c5c;
+  /*position: absolute;*/
+  /*top: 13px;*/
+  /*right: 8px;*/
+  height: 60px;
+  width: 60px;
+  border-radius: 0;
+  line-height: 60px;
+}
+header .btn-clipboard > span {
+  left: -1px;
+}
+header .btn-clipboard:hover,
+header .btn-clipboard:focus,
+header .btn-clipboard:active,
+header .btn-clipboard:active:hover,
+header .btn-clipboard:active:focus {
+  background-color: #263c5c;
+}
+header .btn-clipboard.left-positioning {
+  left: 328px;
+  right: unset;
+}
+header .glyphicon-menu-hamburger {
+  color: #f9f9f9;
+  font-size: 23px;
+}
+@media (min-width: 767px) {
+  header {
+    /*height: 80px;*/
+    margin-bottom: 15px;
+  }
+  header .logo img {
+    max-height: 70px !important;
+  }
+  header .logo-name {
+    padding-left: 20px;
+    color: #f9f9f9;
+  }
+  header .btn-clipboard {
+    height: 80px;
+    width: 80px;
+    /*top: 26px;*/
+    /*right: 32px;*/
+    line-height: 80px;
+  }
+  header .glyphicon-menu-hamburger {
+    font-size: 32px !important;
+    line-height: 55px;
+    margin-top: 7px;
+  }
+}
+@media (min-width: 991px) {
+  #header .container.pull-left {
+    line-height: 6.6;
+  }
+  header {
+    margin-bottom: 15px;
+    background-color: inherit;
+    background-image: none;
+  }
+  header .h1 {
+    font-size: 29.167px;
+    color: #3f3f3f;
+  }
+}

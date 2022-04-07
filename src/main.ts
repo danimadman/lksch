@@ -1,9 +1,15 @@
-import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
-import { enableProdMode } from '@angular/core';
 import "./polyfills";
 
-import { AppModule } from "./app/app.module";
+import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+import { enableProdMode } from '@angular/core';
 
-enableProdMode();
-const platform = platformBrowserDynamic();
-platform.bootstrapModule(AppModule, { preserveWhitespaces: true }).catch(err => console.error(err));
+import { AppModule } from "./app/app.module";
+import {environment} from "./environments/environment";
+
+if (environment.production) {
+    enableProdMode();
+}
+
+platformBrowserDynamic().bootstrapModule(AppModule, {
+    preserveWhitespaces: true
+}).catch(err => console.error(err));

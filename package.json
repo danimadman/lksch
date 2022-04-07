@@ -6,8 +6,16 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build"
+    "build": "ng build",
+    "lint": "ng lint",
+    "e2e": "ng e2e",
+    "compodoc": "./node_modules/.bin/compodoc -p tsconfig.json",
+    "build--prod": "ng build --prod --no-sourcemap --stats-json && npm run sw",
+    "sw": "sw-precache --root=dist --config=sw-precache-config.js",
+    "static-serve": "cd dist && live-server --port=4200 --host=localhost --entry-file=/index.html"
   },
+  "main": "index.js",
+  "private": true,
   "dependencies": {
     "@angular/animations": "^13.0.0",
     "@angular/common": "~13.0.0",
@@ -18,6 +26,7 @@
     "@angular/platform-browser": "~13.0.0",
     "@angular/platform-browser-dynamic": "~13.0.0",
     "@angular/router": "~13.0.0",
+    "@ngrx/store": "^13.1.0",
     "@progress/kendo-angular-buttons": "^7.0.0",
     "@progress/kendo-angular-common": "^2.0.0",
     "@progress/kendo-angular-conversational-ui": "^4.0.1",
@@ -48,7 +57,9 @@
     "@progress/kendo-theme-default": "^5.0.0",
     "browserslist": "^4.20.2",
     "file-saver": "^2.0.5",
+    "firebase": "^9.6.10",
     "ngx-cookie-service": "^13.1.2",
+    "reselect": "^4.1.5",
     "rxjs": "~7.4.0",
     "zone.js": "~0.11.4"
   },

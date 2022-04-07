@@ -1,0 +1,13 @@
+<app-header></app-header>
+<div class="k-display-flex">
+    <app-menu *ngIf="showMenu"></app-menu>
+    <section id="content-block">
+        <router-outlet
+                (attach)="attach($event)"
+                (detach)="detach($event)"
+                (activate)="activate($event)"
+                (deactivate)="deactivate($event)">
+        </router-outlet>
+    </section>
+</div>
+<app-footer></app-footer>
