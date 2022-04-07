@@ -3,3 +3,7 @@
 /node_modules/
 /.angular/cache/
 /.idea/.idea.LKSchoolClient.dir/.idea/
+/.idea/LKSchoolClient.iml
+/.idea/modules.xml
+/.idea/vcs.xml
+/.idea/workspace.xml
