@@ -5,6 +5,6 @@
 
 export const environment = {
     production: false,
-    //apiEndpoint: 'https://demo.volgatech.net:666/api/'
-    apiEndpoint: 'https://localhost:5001/api/'
+    apiEndpoint: 'https://demo.volgatech.net:666/api/'
+    //apiEndpoint: 'https://localhost:5001/api/'
 };

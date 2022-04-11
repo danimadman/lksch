@@ -6,6 +6,7 @@ import {AccountService} from "../../services/account.service";
 import {Course} from "../../models/courses";
 import {RoleEnum} from "../../options/enums";
 import {courseDetailsUrl, coursesUrl} from "../../options/settings";
+import {RoleService} from "../../services/role.service";
 
 @Component({
     templateUrl: './courses.html',
@@ -20,14 +21,13 @@ export class CoursesComponent implements OnInit {
     isAdmin: boolean = false;
 
     constructor(private notification: NotService, private router: Router, private coursesService: CoursesService,
-                private accountService: AccountService) {
+                private roleService: RoleService) {
     }
 
     ngOnInit() {
-        this.accountService.getRoles().subscribe(data => {
-            this.roles = data;
-            this.isAdmin = data.includes(RoleEnum.Admin);
-        });
+        this.roles = this.roleService.getRole();
+        if (this.roles != null)
+            this.isAdmin = this.roles.includes(RoleEnum.Admin);
 
         this.coursesService.getCourses().subscribe(
             data => {

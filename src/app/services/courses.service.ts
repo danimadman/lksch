@@ -97,6 +97,10 @@ export class CoursesService {
         return this.http.delete<boolean>(`${this.url}/DeleteStudentCourse/${id}`);
     }
 
+    studentCourseRecordRead(id): Observable<boolean> {
+        return this.http.put<boolean>(`${this.url}/StudentCourseRecordRead/${id}`, null);
+    }
+
     /* -------------- COURSE PROGRAMM -------------- */
 
     getCourseProgramm(courseId): Observable<ProgrammModule[]> {

@@ -6,6 +6,7 @@ import {EventShort} from "../../models/events";
 import {RoleEnum} from "../../options/enums";
 import {AccountService} from "../../services/account.service";
 import {eventDetailsUrl, eventsUrl, registeredEventsUrl} from "../../options/settings";
+import {RoleService} from "../../services/role.service";
 
 @Component({
     templateUrl: './events.html',
@@ -20,14 +21,13 @@ export class EventsComponent implements OnInit {
     isAdmin: boolean = false;
 
     constructor(private notification: NotService, private router: Router, private eventsService: EventsService,
-                private accountService: AccountService) {
+                private accountService: AccountService, private roleService: RoleService) {
     }
 
     ngOnInit() {
-        this.accountService.getRoles().subscribe(data => {
-            this.roles = data;
-            this.isAdmin = data.includes(RoleEnum.Admin);
-        });
+        this.roles = this.roleService.getRole();
+        if (this.roles != null)
+            this.isAdmin = this.roles.includes(RoleEnum.Admin);
 
         this.eventsService.getEvents().subscribe(
             data => {

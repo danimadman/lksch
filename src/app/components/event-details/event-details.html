@@ -53,23 +53,29 @@
             <kendo-formerror *ngIf="form.controls.location.errors?.maxLength">Максимальная длина строки 1024 символов
             </kendo-formerror>
         </kendo-formfield>
-        <kendo-formfield>
-            <kendo-label text="Срок" class="k-mr-2"></kendo-label>
-            <div class="k-display-flex k-align-items-center">
-                <kendo-label [for]="dateBegin" text="с" class="k-mr-2"></kendo-label>
-                <kendo-datepicker #dateBegin [(ngModel)]="eventDetails.dateBegin" required format="dd.MM.yyyy"
-                                 formControlName="dateBegin" style="width: 165px" [readonly]="!allowEdit">
-                </kendo-datepicker>
-                <kendo-label [for]="dateEnd" text="по" class="k-mr-2 k-ml-2"></kendo-label>
-                <kendo-datepicker #dateEnd [(ngModel)]="eventDetails.dateEnd" required format="dd.MM.yyyy"
-                                 formControlName="dateEnd" style="width: 165px" [readonly]="!allowEdit">
-                </kendo-datepicker>
-            </div>
-            <kendo-formerror *ngIf="form.controls.dateBegin.errors?.required ||
-                                    form.controls.dateEnd.errors?.required">
-                Заполните сроки
-            </kendo-formerror>
-        </kendo-formfield>
+        <kendo-label text="Срок" class="k-mr-2"></kendo-label>
+        <div class="k-display-flex">
+            <kendo-formfield>
+                <div class="k-display-flex k-align-items-center">
+                    <kendo-label [for]="dateBegin" text="с" class="k-mr-2"></kendo-label>
+                    <kendo-datepicker #dateBegin [(ngModel)]="eventDetails.dateBegin" required format="dd.MM.yyyy"
+                                     formControlName="dateBegin" style="width: 165px" [readonly]="!allowEdit">
+                    </kendo-datepicker>
+                </div>
+                <kendo-formerror *ngIf="form.controls.dateBegin.errors?.required">Заполните дату начала
+                </kendo-formerror>
+            </kendo-formfield>
+            <kendo-formfield>
+                <div class="k-display-flex k-align-items-center">
+                    <kendo-label [for]="dateEnd" text="по" class="k-mr-2 k-ml-2"></kendo-label>
+                    <kendo-datepicker #dateEnd [(ngModel)]="eventDetails.dateEnd" required format="dd.MM.yyyy"
+                                      formControlName="dateEnd" style="width: 165px" [readonly]="!allowEdit">
+                    </kendo-datepicker>
+                </div>
+                <kendo-formerror *ngIf="form.controls.dateEnd.errors?.required">Заполните дату окончания
+                </kendo-formerror>
+            </kendo-formfield>
+        </div>
         <kendo-formfield>
             <kendo-label [for]="status" text="Статус"></kendo-label>
             <kendo-dropdownlist #status [data]="eventStatuses" [(ngModel)]="eventDetails.status"
@@ -97,7 +103,7 @@
         </div>
     </form>
     <kendo-tabstrip class="k-mt-3" (tabSelect)="onTabSelect($event)" *ngIf="eventDetails?.id != null">
-        <kendo-tabstrip-tab title="Материалы курса" selected="true">
+        <kendo-tabstrip-tab title="Материалы мероприятия" selected="true">
             <ng-template kendoTabContent>
                 <div class="k-display-flex k-flex-column">
                     <section *ngFor="let file of eventFiles">
@@ -117,23 +123,27 @@
                 </div>
             </ng-template>
         </kendo-tabstrip-tab>
-        <kendo-tabstrip-tab title="Записавшиеся" *ngIf="isAdmin">
+        <kendo-tabstrip-tab [title]="'Записавшиеся' + (studentEventsNewRecord > 0 ? ' (' + studentEventsNewRecord + ')' : '')"
+                            *ngIf="isAdmin">
             <ng-template kendoTabContent>
-                <kendo-grid [pageSize]="20" [pageable]="true" [sortable]="true" [columnMenu]="{ filter: true }"
-                            [kendoGridBinding]="studentEvents" style="width: 100%;" [filter]="gridState.filter"
-                            (remove)="removeStudentEvent($event)">
-                    <kendo-grid-column field="user.firstName" title="№" [resizable]="true" filter="text"
-                                       width="32" columnMenu="false">
+                <kendo-grid [pageSize]="20" [pageable]="true" [sortable]="true" [columnMenu]="true"
+                            [kendoGridBinding]="studentEvents" [filter]="gridState.filter" [filterable]="true"
+                            (remove)="removeStudentEvent($event)"
+                            style="width: 100%;" scrollable="virtual">
+                    <kendo-grid-column title="№" filter="text" width="45" class="text-center"
+                                       [columnMenu]="false" [filterable]="false" [resizable]="true">
                         <ng-template kendoGridCellTemplate let-rowIndex="rowIndex">
                             {{rowIndex + 1}}
                         </ng-template>
                     </kendo-grid-column>
-                    <kendo-grid-column field="user.firstName" title="ФИО" [resizable]="true" filter="text">
+                    <kendo-grid-column field="user.firstName" title="ФИО" filter="text" width="260"
+                                       [resizable]="true">
                         <ng-template kendoGridCellTemplate let-dataItem>
-                            {{dataItem.user?.lastName + " " + dataItem.user?.firstName + " " + (dataItem.user?.middleName ?? '')}}
+                            {{dataItem.user?.lastName + " " + dataItem.user?.firstName + " " + (dataItem.user?.middleName ?? '') + dataItem.isNewRecord ? ' (новая запись)' : ''}}
                         </ng-template>
                     </kendo-grid-column>
-                    <kendo-grid-column title="Статус записи" [resizable]="true">
+                    <kendo-grid-column title="Статус записи" field="status.name" filter="text" width="270"
+                                       [resizable]="true">
                         <ng-template kendoGridCellTemplate let-dataItem>
                             <kendo-dropdownlist [data]="studentEventStatuses" [value]="dataItem.status"
                                                 [readonly]="!allowEdit" textField="name" valueField="id"
@@ -141,16 +151,21 @@
                             </kendo-dropdownlist>
                         </ng-template>
                     </kendo-grid-column>
-                    <kendo-grid-column field="user.phoneNumber" title="Контактный телефон" [resizable]="true"
-                                       filter="text" [hidden]="true">
+                    <kendo-grid-column field="user.phoneNumber" title="Контактный телефон" filter="text" width="180"
+                                       [resizable]="true" [hidden]="true">
                     </kendo-grid-column>
-                    <kendo-grid-column field="user.email" title="E-mail" [resizable]="true" filter="text"
-                                       [hidden]="true">
+                    <kendo-grid-column field="user.email" title="E-mail" filter="text" width="210"
+                                       [resizable]="true" [hidden]="true">
                     </kendo-grid-column>
-                    <kendo-grid-column field="user.birthday" title="Дата рождения" [resizable]="true" filter="date"
-                                       [hidden]="true">
+                    <kendo-grid-column field="user.birthday" title="Дата рождения" filter="date" class="text-center"
+                                       width="210"
+                                       [resizable]="true" [hidden]="true">
+                        <ng-template kendoGridCellTemplate let-dataItem>
+                            {{dataItem.user?.birthday?.toLocaleDateString("ru-RU") ?? ''}}
+                        </ng-template>
                     </kendo-grid-column>
-                    <kendo-grid-command-column width="57" *ngIf="allowEdit">
+                    <kendo-grid-command-column width="57" *ngIf="allowEdit" class="text-center"
+                                               [columnMenu]="false">
                         <ng-template kendoGridCellTemplate>
                             <button kendoGridRemoveCommand icon="delete" fillMode="clear"></button>
                         </ng-template>
@@ -164,17 +179,20 @@
                     <button *ngIf="allowEdit" kendoButton fillMode="solid" themeColor="primary"
                             class="k-mb-2 k-float-right" (click)="addEventAd()">Добавить
                     </button>
-                    <kendo-grid [pageSize]="20" [pageable]="true" [sortable]="true" [columnMenu]="{ filter: true }"
-                                [kendoGridBinding]="eventAds" style="width: 100%;" [filter]="gridState.filter"
+                    <kendo-grid [pageSize]="20" [pageable]="true" [sortable]="true" [columnMenu]="true" [filterable]="true"
+                                [kendoGridBinding]="eventAds" [filter]="gridState.filter"
                                 (remove)="removeEventAd($event)"
                                 (edit)="eventAdDetails($event)"
-                                (cellClick)="eventAdDetails($event)">
+                                (cellClick)="eventAdDetails($event)"
+                                style="width: 100%;">
                         <kendo-grid-column field="dateAdd" title="Дата" [resizable]="true" filter="date"
                                            format="dd.MM.yyyy HH:mm">
                         </kendo-grid-column>
                         <kendo-grid-column field="title" title="Объявление" [resizable]="true" filter="text">
                         </kendo-grid-column>
-                        <kendo-grid-command-column width="100" *ngIf="allowEdit">
+                        <kendo-grid-command-column width="100" class="text-center"
+                                                   [columnMenu]="false"
+                                                   *ngIf="allowEdit">
                             <ng-template kendoGridCellTemplate>
                                 <button kendoGridEditCommand icon="edit" fillMode="clear"></button>
                                 <button kendoGridRemoveCommand icon="delete" fillMode="clear"></button>

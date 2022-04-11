@@ -7,6 +7,7 @@ import {addAchievementUrl, achievementsUrl} from '../../options/settings';
 import {RoleEnum} from '../../options/enums';
 import {AccountService} from "../../services/account.service";
 import {DictService} from "../../services/dict.service";
+import {RoleService} from "../../services/role.service";
 
 @Component({
     templateUrl: './achievements.html',
@@ -23,15 +24,14 @@ export class AchievementsComponent implements AfterViewInit, OnInit {
     gridLoading: boolean = true;
 
     constructor(private achievementsService: AchievementsService, private notification: NotService,
-                private router: Router, private accountService: AccountService, 
-                private dictService: DictService) {
+                private router: Router, private roleService: RoleService) {
     }
 
     ngOnInit() {
-        this.accountService.getRoles().subscribe(data => {
-            this.roles = data;
+        this.roles = this.roleService.getRole();
+        if (this.roles != null)
             this.isAdmin = this.roles.includes(RoleEnum.Admin);
-        });
+
         this.getAchievements();
     }
 

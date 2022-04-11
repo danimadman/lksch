@@ -3,22 +3,24 @@
   <button kendoButton fillMode="solid" themeColor="primary" class="k-float-right k-mb-2"
           (click)="addEvent()" *ngIf="isAdmin">Добавить мероприятие
   </button>
-  <kendo-grid [pageSize]="20" [pageable]="true" [sortable]="true" [columnMenu]="{ filter: true }"
-              [kendoGridBinding]="events" style="width: 100%;" (cellClick)="cellClick($event)" [loading]="gridLoading">
-    <kendo-grid-column field="name" title="Название" [resizable]="true" filter="text">
+  <kendo-grid [pageSize]="20" [pageable]="true" [sortable]="true" [columnMenu]="true" [filterable]="true"
+              [kendoGridBinding]="events" [loading]="gridLoading"
+              (cellClick)="cellClick($event)"
+              scrollable="virtual" style="width: 100%;">
+    <kendo-grid-column field="name" title="Название" [resizable]="true" filter="text" width="300">
     </kendo-grid-column>
-    <kendo-grid-column title="Срок проведения" [resizable]="true" filter="false">
+    <kendo-grid-column title="Срок проведения" [resizable]="true" [filterable]="false" width="210" class="text-center">
       <ng-template kendoGridCellTemplate let-dataItem>
         с {{dataItem.dateBegin.toLocaleDateString("ru-RU")}}
         по {{dataItem.dateEnd.toLocaleDateString("ru-RU")}}
       </ng-template>
     </kendo-grid-column>
-    <kendo-grid-column field="typeName" title="Мероприятие" [resizable]="true" filter="text">
+    <kendo-grid-column field="typeName" title="Мероприятие" [resizable]="true" filter="text" width="180">
     </kendo-grid-column>
-    <kendo-grid-column field="statusName" title="Статус" [resizable]="true" filter="text">
+    <kendo-grid-column field="statusName" title="Статус" [resizable]="true" filter="text" width="147">
     </kendo-grid-column>
-    <kendo-grid-column field="registeredCount" title="Участники" [resizable]="true" filter="numeric"
-                       *ngIf="isAdmin">
+    <kendo-grid-column field="registeredCount" title="Участники" [resizable]="true" filter="numeric" width="120"
+                       *ngIf="isAdmin" class="text-center">
     </kendo-grid-column>
   </kendo-grid>
 </div>

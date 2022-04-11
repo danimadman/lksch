@@ -15,6 +15,7 @@ import {DialogCloseResult} from "@progress/kendo-angular-dialog";
 import {ConfirmService} from "../../services/confirm.service";
 import {UserModel} from "../../models/account";
 import {Guid} from "../../services/Helper/common";
+import {RoleService} from "../../services/role.service";
 
 @Component({
     templateUrl: './course-details.html',
@@ -42,6 +43,7 @@ export class CourseDetailsComponent implements OnInit {
 
     studentRegistered: StudentRegistered[];
     studentCourseStatus: Dict;
+    studentRegisteredNewRecord: number = 0;
 
     showCourseAddDetails: boolean = false;
     courseAd: CourseAd;
@@ -59,7 +61,7 @@ export class CourseDetailsComponent implements OnInit {
     constructor(private notification: NotService, private router: Router, private activateRoute: ActivatedRoute,
                 private courseService: CoursesService, private accountService: AccountService,
                 private dictService: DictService, private confirmService: ConfirmService,
-                private formBuilder:FormBuilder) {
+                private roleService: RoleService) {
         this.courseId = activateRoute.snapshot.params["id"];
         activateRoute.queryParams.subscribe(x => {
             if (x.ReturnUrl != undefined)
@@ -71,10 +73,10 @@ export class CourseDetailsComponent implements OnInit {
         this.accountService.getUser().subscribe(data => {
             this.user = data;
         });
-        this.accountService.getRoles().subscribe(data => {
-            this.roles = data;
-            this.allowEdit = this.isAdmin = data.includes(RoleEnum.Admin);
-        });
+
+        this.roles = this.roleService.getRole();
+        if (this.roles != null)
+            this.allowEdit = this.isAdmin = this.roles.includes(RoleEnum.Admin);
 
         this.getCourseStatuses();
         this.getStudentCourseStatuses();
@@ -154,6 +156,7 @@ export class CourseDetailsComponent implements OnInit {
             case 1:
                 if (!this.isAdmin)
                     return;
+                this.studentCourseRecordRead();
                 break;
             case 2:
                 break;
@@ -352,8 +355,7 @@ export class CourseDetailsComponent implements OnInit {
         let min = new Date(Math.min.apply(null, dates));
         let max = new Date(Math.max.apply(null, dates));
 
-        module.date = `c ${min.toLocaleDateString("ru-RU")} ${min.toLocaleTimeString("ru-RU")} 
-                        по ${max.toLocaleDateString("ru-RU")} ${max.toLocaleTimeString("ru-RU")}`;
+        module.date = `c ${min.toLocaleDateString("ru-RU")} по ${max.toLocaleDateString("ru-RU")}`;
     }
 
     async saveCourseProgramm() {
@@ -483,6 +485,7 @@ export class CourseDetailsComponent implements OnInit {
         this.courseService.getStudentRegistered(this.courseDetails.id).subscribe(
             data => {
                 this.studentRegistered = data;
+                this.studentRegisteredNewRecord = data?.filter(x => x.isNewRecord)?.length ?? 0;
                 this.studentCourseStatus = data?.find(x => x.user?.id == this.user?.id)?.status;
             },
             error => this.notification.showNotification("error",
@@ -535,6 +538,15 @@ export class CourseDetailsComponent implements OnInit {
                 this.cancel();
             },error => this.notification.showNotification("error",
                 error?.error?.message ?? "Не удалось зарегистрироваться"));
+    }
+
+    studentCourseRecordRead() {
+        if (!this.isAdmin || this.studentRegistered == null)
+            return;
+
+        this.studentRegistered.filter(x => x.isNewRecord).forEach(x => {
+            this.courseService.studentCourseRecordRead(x.id);
+        })
     }
 
     /* -------------- COURSE ADS -------------- */

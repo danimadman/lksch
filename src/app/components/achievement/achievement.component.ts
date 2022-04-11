@@ -36,8 +36,12 @@ export class AchievementComponent implements OnInit {
         allowedExtensions: ["pdf", "jpg", "jpeg", "png", "heic"],
     };
     uploads: Array<any>;
-    public comments: Message[] = [];
-    public currentUser: User;
+    comments: Message[] = [];
+    currentUser: User = new class implements User {
+        avatarUrl: string | SafeUrl;
+        id: any;
+        name: string;
+    };
     loaded: boolean = false;
     
     constructor(private achievementsService: AchievementsService, private dictService: DictService,
@@ -57,11 +61,7 @@ export class AchievementComponent implements OnInit {
         this.getStatuses();
         this.accountService.getUser().subscribe(
             data => {
-                this.currentUser = new class implements User {
-                    avatarUrl: string | SafeUrl;
-                    id: any;
-                    name: string;
-                }
+
                 this.currentUser.id = data.id;
                 this.currentUser.name = data.lastName + ' ' + data.firstName + ' ' + (data.middleName ?? '');
             },

@@ -38,5 +38,5 @@ export class UserModel {
     public isMale: boolean;
     public email: string;
     public phoneNumber: string;
-    public birthDay: Date;
+    public birthday: Date;
 }

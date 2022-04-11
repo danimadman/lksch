@@ -21,4 +21,6 @@ export const courseDetailsUrl = '/CourseDetails';
 export const lkschool_tokens = 'lkschool-tokens';
 export const access_token_key = 'auth-token';
 export const access_token_type = 'auth-token-type';
-export const refresh_token_key = 'refresh-token'
+export const refresh_token_key = 'refresh-token';
+
+export const role_key = 'role';

@@ -21,18 +21,20 @@
             (click)="addAchievement()" *ngIf="!isAdmin">
         Добавить достижение
     </button>
-    <kendo-grid [pageSize]="20" [pageable]="true" [sortable]="true" [columnMenu]="{ filter: true }" filterable="true"
-                [kendoGridBinding]="achievements" style="width: 100%;" (cellClick)="cellClick($event)" [loading]="gridLoading">
-        <kendo-grid-column *ngIf="isAdmin" field="userFullName" title="ФИО школьника" [resizable]="true" 
-                           filter="text">
+    <kendo-grid [pageSize]="20" [pageable]="true" [sortable]="true" [filterable]="true" [columnMenu]="true"
+                [kendoGridBinding]="achievements"
+                (cellClick)="cellClick($event)" [loading]="gridLoading"
+                style="width: 100%; display: grid;" scrollable="virtual">
+        <kendo-grid-column *ngIf="isAdmin" field="userFullName" title="ФИО школьника" [resizable]="true"
+                           width="210" filter="text">
         </kendo-grid-column>
-        <kendo-grid-column field="title" title="Достижение" [resizable]="true" filter="text">
+        <kendo-grid-column field="title" title="Достижение" [resizable]="true" width="270"  filter="text">
         </kendo-grid-column>
-        <kendo-grid-column field="event" title="Мероприятие" [resizable]="true" filter="text">
+        <kendo-grid-column field="event" title="Мероприятие" [resizable]="true" width="270" filter="text">
         </kendo-grid-column>
-        <kendo-grid-column field="type.name" title="Тип достижения" [resizable]="true" filter="text">
+        <kendo-grid-column field="type.name" title="Тип достижения" [resizable]="true" filter="text" width="160">
         </kendo-grid-column>
-        <kendo-grid-column field="status.name" title="Статус" [resizable]="true" filter="text">
+        <kendo-grid-column field="status.name" title="Статус" [resizable]="true" filter="text" width="120">
         </kendo-grid-column>
     </kendo-grid>
 </div>

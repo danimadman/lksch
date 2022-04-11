@@ -3,21 +3,25 @@
     <button kendoButton fillMode="solid" themeColor="primary" class="k-float-right k-mb-2"  *ngIf="isAdmin"
         (click)="addCourse()">Добавить
     </button>
-    <kendo-grid [pageSize]="20" [pageable]="true" [sortable]="true" [columnMenu]="{ filter: true }"
-                [kendoGridBinding]="courses" style="width: 100%;" (cellClick)="cellClick($event)" [loading]="gridLoading">
-        <kendo-grid-column field="name" title="Название" [resizable]="true" filter="text">
+    <kendo-grid [pageSize]="20" [pageable]="true" [sortable]="true" [columnMenu]="true"
+                [kendoGridBinding]="courses" [loading]="gridLoading" [filterable]="true"
+                (cellClick)="cellClick($event)"
+                scrollable="virtual" style="width: 100%;">
+        <kendo-grid-column field="name" title="Название" [resizable]="true" filter="text" width="370">
         </kendo-grid-column>
-        <kendo-grid-column title="Срок проведения" [resizable]="true" filter="false">
+        <kendo-grid-column title="Срок проведения" [resizable]="true" [filterable]="false" width="210" class="text-center">
             <ng-template kendoGridCellTemplate let-dataItem>
                 с {{dataItem.dateBegin.toLocaleDateString("ru-RU")}}
                 по {{dataItem.dateEnd.toLocaleDateString("ru-RU")}}
             </ng-template>
         </kendo-grid-column>
-        <kendo-grid-column field="academicHours" title="Длительность" [resizable]="true" filter="numeric">
+        <kendo-grid-column field="academicHours" title="Длительность" [resizable]="true" filter="numeric" width="144"
+                           class="text-center">
         </kendo-grid-column>
-        <kendo-grid-column field="status.name" title="Статус" [resizable]="true" filter="text">
+        <kendo-grid-column field="status.name" title="Статус" [resizable]="true" filter="text" width="150">
         </kendo-grid-column>
-        <kendo-grid-column field="members" title="Участники" [resizable]="true" filter="numeric" *ngIf="isAdmin">
+        <kendo-grid-column field="members" title="Участники" [resizable]="true" filter="numeric" *ngIf="isAdmin"
+                           width="120" class="text-center">
         </kendo-grid-column>
     </kendo-grid>
 </div>

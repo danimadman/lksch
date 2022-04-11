@@ -42,10 +42,9 @@ export class AccountService {
     }
     
     getRoles() : Observable<number[]> {
-        return this.http.get(`${this.url}/GetRoles`).pipe(
-            map((data: number[]) => data),
-            catchError(err => throwError(err))
-        );
+        return this.http.get<number[]>(`${this.url}/GetRoles`, {
+            withCredentials: true
+        });
     }
 
     getUser(): Observable<UserModel> {

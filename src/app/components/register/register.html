@@ -65,8 +65,10 @@
                     </kendo-formfield>
                     <kendo-formfield>
                         <kendo-label [for]="phoneNumber" text="Контактный телефон"></kendo-label>
-                        <input kendoTextBox #phoneNumber [(ngModel)]="registerModel.phoneNumber" required formControlName="phoneNumber"
-                                       maxlength="128" placeholder="Введите номер телефона"/>
+                        <kendo-maskedtextbox #phoneNumber [(ngModel)]="registerModel.phoneNumber" required
+                                             formControlName="phoneNumber" maxlength="128" mask="+7 (###) ###-##-##"
+                                             placeholder="Введите номер телефона">
+                        </kendo-maskedtextbox>
                         <kendo-formerror *ngIf="form.controls.phoneNumber.errors?.required">Номер телефона должен быть заполнен
                         </kendo-formerror>
                         <kendo-formerror *ngIf="form.controls.phoneNumber.errors?.maxLength">Максимальная длина 128 символов

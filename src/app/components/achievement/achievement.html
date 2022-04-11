@@ -38,40 +38,41 @@
             <kendo-formerror *ngIf="form.controls.event.errors?.required">Обязательное поле
             </kendo-formerror>
         </kendo-formfield>
-        <kendo-formfield>
-            <kendo-label text="Подтверждающий документ"></kendo-label>
-            <div class="k-display-flex k-flex-column k-mb-1">
-                <section *ngFor="let file of achievement.files">
-                    <button kendoButton (click)="downloadFile($any(file))" fillMode="flat" icon="file">
-                        {{file.fileName}}
-                    </button>
-                    <button *ngIf="achievement?.allowEdit" kendoButton fillMode="flat" icon="delete" (click)="deleteFile(file.id)">
-                    </button>
-                </section>
-            </div>
-            <kendo-fileselect [restrictions]="restrictions" [(ngModel)]="uploads" 
-                              [ngModelOptions]="{standalone: true}" *ngIf="achievement?.allowEdit">
-            </kendo-fileselect>
-        </kendo-formfield>
-        <kendo-formfield class="k-display-flex k-align-items-center">
-            <kendo-label text="Статус"></kendo-label>
-            <span class="k-ml-5" style="font-size: 18px;">{{achievement?.status?.name}}</span>
-        </kendo-formfield>
-        <div class="k-display-flex k-justify-content-between k-mt-3">
-            <button kendoButton fillMode="solid" (click)="cancel()" class="k-display-flex k-flex-nowrap k-mr-1">{{'Отмена'}}</button>
-
-            <div class="available-statuses k-display-flex k-justify-content-end">
-                <button *ngIf="achievement?.allowEdit && achievement?.id > 0" kendoButton fillMode="solid" class="k-ml-1 k-mr-1"
-                        (click)="deleteAchievement($any(achievement?.id))">{{'Удалить'}}</button>
-                <button *ngIf="achievement?.allowEdit" kendoButton fillMode="solid" themeColor="primary" class="k-ml-1 k-mr-1"
-                    (click)="save($any(achievement?.status?.id))">{{achievement.id > 0 ? 'Сохранить' : 'Сохранить как черновик'}}</button>
-                <button *ngFor="let availableStatus of achievement.availableStatuses" kendoButton 
-                        fillMode="solid" themeColor="primary" class="k-ml-1 k-mr-1" (click)="save($any(availableStatus.id))">
-                    {{getBtnStatusName(availableStatus.id)}}
-                </button>
-            </div>
-        </div>
     </form>
+    <div style="margin-top: 14px;">
+        <kendo-label text="Подтверждающий документ"></kendo-label>
+        <div class="k-display-flex k-flex-column k-mb-1">
+            <section *ngFor="let file of achievement.files">
+                <button kendoButton (click)="downloadFile($any(file))" fillMode="flat" icon="file">
+                    {{file.fileName}}
+                </button>
+                <button *ngIf="achievement?.allowEdit" kendoButton fillMode="flat" icon="delete" (click)="deleteFile(file.id)">
+                </button>
+            </section>
+        </div>
+        <kendo-fileselect [restrictions]="restrictions" [(ngModel)]="uploads"
+                          [ngModelOptions]="{standalone: true}" *ngIf="achievement?.allowEdit">
+        </kendo-fileselect>
+    </div>
+    <div style="margin-top: 14px;" class="k-display-flex k-align-items-center">
+        <kendo-label text="Статус"></kendo-label>
+        <span class="k-ml-5" style="font-size: 18px;">{{achievement?.status?.name}}</span>
+    </div>
+    <div class="k-display-flex k-justify-content-between k-mt-3">
+        <button kendoButton fillMode="solid" (click)="cancel()" class="k-display-flex k-flex-nowrap k-mr-1">{{'Отмена'}}</button>
+
+        <div class="available-statuses k-display-flex k-justify-content-end">
+            <button *ngIf="achievement?.allowEdit && achievement?.id > 0" kendoButton fillMode="solid" class="k-ml-1 k-mr-1"
+                    (click)="deleteAchievement($any(achievement?.id))">{{'Удалить'}}</button>
+            <button *ngIf="achievement?.allowEdit" kendoButton fillMode="solid" themeColor="primary" class="k-ml-1 k-mr-1"
+                (click)="save($any(achievement?.status?.id))">{{achievement.id > 0 ? 'Сохранить' : 'Сохранить как черновик'}}</button>
+            <button *ngFor="let availableStatus of achievement.availableStatuses" kendoButton
+                    fillMode="solid" themeColor="primary" class="k-ml-1 k-mr-1" (click)="save($any(availableStatus.id))">
+                {{getBtnStatusName(availableStatus.id)}}
+            </button>
+        </div>
+    </div>
+
     <kendo-chat #chat [messages]="comments" [user]="currentUser" (sendMessage)="sendComment($event)"
                 *ngIf="achievement?.id > 0" class="k-mt-2">
     </kendo-chat>

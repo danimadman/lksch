@@ -77,7 +77,16 @@ export class EventsService {
     /* -------------- STUDENT EVENTS -------------- */
 
     getStudentEvents(eventId): Observable<StudentEvent[]> {
-        return this.http.get<StudentEvent[]>(`${this.url}/GetStudentEvents/${eventId}`);
+        return this.http.get(`${this.url}/GetStudentEvents/${eventId}`).pipe(
+            map(
+                (data: StudentEvent[]) => {
+                    return data.map(function (d: StudentEvent): StudentEvent {
+                        d.user.birthday = new Date(d.user.birthday);
+                        return d;
+                    });
+                }
+            )
+        );
     }
 
     postStudentEvent(data: any): Observable<string> {
@@ -90,6 +99,10 @@ export class EventsService {
 
     deleteStudentEvent(id): Observable<boolean> {
         return this.http.delete<boolean>(`${this.url}/DeleteStudentEvent/${id}`);
+    }
+
+    studentEventRecordRead(id): Observable<boolean> {
+        return this.http.put<boolean>(`${this.url}/StudentEventRecordRead/${id}`, null);
     }
 
     /* -------------- EVENT ADS -------------- */

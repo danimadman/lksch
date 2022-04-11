@@ -34,23 +34,28 @@
             <kendo-formerror *ngIf="form.controls.teachers.errors?.maxLength">Максимальная длина строки 1024 символов
             </kendo-formerror>
         </kendo-formfield>
-        <kendo-formfield>
-            <kendo-label text="Срок" class="k-mr-2"></kendo-label>
-            <div class="k-display-flex k-align-items-center">
-                <kendo-label [for]="dateBegin" text="с" class="k-mr-2"></kendo-label>
-                <kendo-datepicker #dateBegin [(ngModel)]="courseDetails.dateBegin" required format="dd.MM.yyyy"
-                                 formControlName="dateBegin" style="width: 165px" [readonly]="!allowEdit">
-                </kendo-datepicker>
-                <kendo-label [for]="dateEnd" text="по" class="k-mr-2 k-ml-2"></kendo-label>
-                <kendo-datepicker #dateEnd [(ngModel)]="courseDetails.dateEnd" required format="dd.MM.yyyy"
-                                 formControlName="dateEnd" style="width: 165px" [readonly]="!allowEdit">
-                </kendo-datepicker>
-            </div>
-            <kendo-formerror *ngIf="form.controls.dateBegin.errors?.required ||
-                                    form.controls.dateEnd.errors?.required">
-                Заполните сроки
-            </kendo-formerror>
-        </kendo-formfield>
+        <div class="k-display-flex">
+            <kendo-formfield>
+                <div class="k-display-flex k-align-items-center">
+                    <kendo-label [for]="dateBegin" text="с" class="k-mr-2"></kendo-label>
+                    <kendo-datepicker #dateBegin [(ngModel)]="courseDetails.dateBegin" required format="dd.MM.yyyy"
+                                      formControlName="dateBegin" style="width: 165px" [readonly]="!allowEdit">
+                    </kendo-datepicker>
+                </div>
+                <kendo-formerror *ngIf="form.controls.dateBegin.errors?.required">Заполните дату начала
+                </kendo-formerror>
+            </kendo-formfield>
+            <kendo-formfield>
+                <div class="k-display-flex k-align-items-center">
+                    <kendo-label [for]="dateEnd" text="по" class="k-mr-2 k-ml-2"></kendo-label>
+                    <kendo-datepicker #dateEnd [(ngModel)]="courseDetails.dateEnd" required format="dd.MM.yyyy"
+                                      formControlName="dateEnd" style="width: 165px" [readonly]="!allowEdit">
+                    </kendo-datepicker>
+                </div>
+                <kendo-formerror *ngIf="form.controls.dateEnd.errors?.required">Заполните дату окончания
+                </kendo-formerror>
+            </kendo-formfield>
+        </div>
         <kendo-formfield>
             <kendo-label [for]="duration" text="Длительность, ак. ч"></kendo-label>
             <kendo-numerictextbox #duration [(ngModel)]="courseDetails.academicHours"
@@ -117,16 +122,16 @@
                 <ng-template kendoTabContent>
                     <div class="k-grid" style="width: 100%;">
                         <div class="k-grid-aria-root">
-                            <div class="k-grid-header">
-                                <div class="k-grid-header-wrap">
+                            <div role="presentation" class="k-grid-header">
+                                <div role="presentation" class="k-grid-header-wrap">
                                     <table>
-                                        <thead>
-                                            <tr>
+                                        <thead kendogridheader role="presentation">
+                                            <tr kendogridlogicalrow role="row" aria-rowindex="1">
                                                 <th class="k-header text-center">Название</th>
                                                 <th class="k-header text-center">Длительность</th>
                                                 <th class="k-header text-center">Срок проведения</th>
                                                 <th class="k-header text-center">Место проведения</th>
-                                                <th class="k-header text-center" style="width: 85px;" *ngIf="allowEdit"></th>
+                                                <th class="k-header text-center" *ngIf="allowEdit"></th>
                                             </tr>
                                         </thead>
                                     </table>
@@ -136,19 +141,19 @@
                                 <div class="k-grid-content k-virtual-content">
                                     <div class="k-grid-table-wrap">
                                         <table class="k-grid-table" *ngFor="let programm of courseProgramms; let index = index">
-                                            <colgroup kendogridcolgroup="">
+                                            <colgroup kendogridcolgroup role="presentation">
                                                 <col class="ng-star-inserted">
                                                 <col class="ng-star-inserted">
                                                 <col class="ng-star-inserted">
                                                 <col class="ng-star-inserted">
                                                 <col class="ng-star-inserted" style="width: 85px;" *ngIf="allowEdit">
                                             </colgroup>
-                                            <tbody>
-                                                <tr style="background-color: #e3e3e3a1;">
+                                            <tbody role="presentation">
+                                                <tr style="background-color: #e3e3e3a1;" role="row">
                                                     <ng-container [ngSwitch]="programm.dataState">
                                                         <ng-container *ngSwitchCase="1"></ng-container>
                                                         <ng-container *ngSwitchDefault>
-                                                            <td>
+                                                            <td kendogridlogicalcell kendogridcell role="gridcell">
                                                                 <input kendoTextBox required [readonly]="!allowEdit"
                                                                        [(ngModel)]="programm.name"
                                                                        [ngModelOptions]="{standalone: true}"
@@ -229,24 +234,27 @@
                     </button>
                 </ng-template>
             </kendo-tabstrip-tab>
-            <kendo-tabstrip-tab title="Записавшиеся" *ngIf="isAdmin">
+            <kendo-tabstrip-tab [title]="'Записавшиеся' + (studentRegisteredNewRecord > 0 ? ' (' + studentRegisteredNewRecord + ')' : '')"
+                                *ngIf="isAdmin">
                 <ng-template kendoTabContent>
-                    <kendo-grid [pageSize]="20" [pageable]="true" [sortable]="true" [columnMenu]="{ filter: true }"
-                                [kendoGridBinding]="studentRegistered" style="width: 100%;"
-                                [filter]="gridState.filter"
-                                (remove)="removeStudentCourse($event)">
-                        <kendo-grid-column title="№" [resizable]="true" filterable="false" width="32"
-                                           columnMenu="false">
+                    <kendo-grid [pageSize]="20" [pageable]="true" [sortable]="true" [columnMenu]="true"
+                                [kendoGridBinding]="studentRegistered" [filter]="gridState.filter" [filterable]="true"
+                                (remove)="removeStudentCourse($event)"
+                                style="width: 100%;">
+                        <kendo-grid-column title="№" width="45" class="text-center"
+                                           [resizable]="true" [filterable]="false" [columnMenu]="false">
                             <ng-template kendoGridCellTemplate let-rowIndex="rowIndex">
                                 {{rowIndex + 1}}
                             </ng-template>
                         </kendo-grid-column>
-                        <kendo-grid-column title="ФИО" [resizable]="true" filter="text">
+                        <kendo-grid-column title="ФИО" field="user.lastName" filter="text" width="260"
+                                           [resizable]="true">
                             <ng-template kendoGridCellTemplate let-dataItem>
-                                {{dataItem.user?.lastName + " " + dataItem.user?.firstName + " " + (dataItem.user?.middleName ?? "")}}
+                                {{dataItem.user?.lastName + " " + dataItem.user?.firstName + " " + (dataItem.user?.middleName ?? "") + dataItem.isNewRecord ? ' (новая запись)' : ''}}
                             </ng-template>
                         </kendo-grid-column>
-                        <kendo-grid-column title="Статус записи" [resizable]="true">
+                        <kendo-grid-column title="Статус записи" width="270" field="status.name" filter="text"
+                                           [resizable]="true">
                             <ng-template kendoGridCellTemplate let-dataItem>
                                 <kendo-dropdownlist [data]="studentCoursetStatuses" [value]="dataItem.status"
                                                     [readonly]="!allowEdit" textField="name" valueField="id"
@@ -254,16 +262,19 @@
                                 </kendo-dropdownlist>
                             </ng-template>
                         </kendo-grid-column>
-                        <kendo-grid-column field="user.phoneNumber" title="Контактный телефон" [resizable]="true"
-                                           filter="text">
+                        <kendo-grid-column field="user.phoneNumber" title="Контактный телефон" filter="text"
+                                           width="180"
+                                           [resizable]="true">
                         </kendo-grid-column>
-                        <kendo-grid-column field="user.email" title="E-mail" [resizable]="true" filter="text"
-                                           [hidden]="true">
+                        <kendo-grid-column field="user.email" title="E-mail" filter="text" width="210"
+                                           [resizable]="true" [hidden]="true">
                         </kendo-grid-column>
-                        <kendo-grid-column field="user.birthday" title="Дата рождения" [resizable]="true" filter="date"
-                                           [hidden]="true">
+                        <kendo-grid-column field="user.birthday" title="Дата рождения" filter="date" width="210"
+                                           [resizable]="true" [hidden]="true">
                         </kendo-grid-column>
-                        <kendo-grid-command-column width="57" *ngIf="allowEdit">
+                        <kendo-grid-command-column width="57" class="text-center"
+                                                   [columnMenu]="false"
+                                                   *ngIf="allowEdit">
                             <ng-template kendoGridCellTemplate>
                                 <button kendoGridRemoveCommand icon="delete" fillMode="clear"></button>
                             </ng-template>
@@ -277,16 +288,19 @@
                         <button *ngIf="allowEdit" kendoButton fillMode="solid" themeColor="primary"
                                 class="k-mb-2 k-float-right" (click)="addCourseAd()">Добавить
                         </button>
-                        <kendo-grid [pageSize]="20" [pageable]="true" [sortable]="true" [columnMenu]="{ filter: true }"
-                                    [kendoGridBinding]="courseAds" style="width: 100%;"
+                        <kendo-grid [pageSize]="20" [pageable]="true" [sortable]="true" [columnMenu]="true"
+                                    [kendoGridBinding]="courseAds" [filter]="gridState.filter" [filterable]="true"
                                     (remove)="removeCourseAd($event)" (edit)="courseAdDetails($event)"
-                                    [filter]="gridState.filter"
-                                    (cellClick)="courseAdDetails($event)">
-                            <kendo-grid-column field="dateAdd" title="Дата" [resizable]="true" filter="date" format="dd.MM.yyyy HH:mm">
+                                    (cellClick)="courseAdDetails($event)"
+                                    style="width: 100%;">
+                            <kendo-grid-column field="dateAdd" title="Дата" [resizable]="true" filter="date"
+                                               format="dd.MM.yyyy HH:mm">
                             </kendo-grid-column>
                             <kendo-grid-column field="title" title="Объявление" [resizable]="true" filter="text">
                             </kendo-grid-column>
-                            <kendo-grid-command-column width="100" *ngIf="allowEdit">
+                            <kendo-grid-command-column width="100" class="text-center"
+                                                       [columnMenu]="false"
+                                                       *ngIf="allowEdit">
                                 <ng-template kendoGridCellTemplate>
                                     <button kendoGridEditCommand icon="edit" fillMode="clear"></button>
                                     <button kendoGridRemoveCommand icon="delete" fillMode="clear"></button>
@@ -300,8 +314,9 @@
                             <input #title kendoTextBox [(ngModel)]="courseAd.title" required formControlName="title"
                                    maxlength="512" [readonly]="!allowEdit"/>
                             <kendo-label [for]="annotation" text="Аннотация"></kendo-label>
-                            <kendo-textarea #annotation [(ngModel)]="courseAd.annotation" required formControlName="annotation"
-                                            maxlength="1024" [readonly]="!allowEdit" resizable="vertical">
+                            <kendo-textarea #annotation [(ngModel)]="courseAd.annotation" required
+                                            formControlName="annotation" maxlength="1024" [readonly]="!allowEdit"
+                                            resizable="vertical">
                             </kendo-textarea>
                             <kendo-label text="Текст новости/объявления"></kendo-label>
                             <kendo-editor [(ngModel)]="courseAd.text" required formControlName="text"

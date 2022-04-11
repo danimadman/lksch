@@ -8,10 +8,12 @@ import {AuthModel} from "../../models/auth";
 import {TokenStorageService} from "../../services/token.service";
 import {Store} from "@ngrx/store";
 import {IUserState} from "../../reducers/user-auth";
+import {AccountService} from "../../services/account.service";
+import {RoleService} from "../../services/role.service";
 
 @Component({
     templateUrl: './login.html',
-    providers: [AuthService, NotService],
+    providers: [AuthService, NotService, AccountService],
     styleUrls: ['./login.css']
 })
 
@@ -30,8 +32,12 @@ export class LoginComponent {
     });
     
     constructor(private authService: AuthService, private router: Router, activeRoute: ActivatedRoute,
-                private notification: NotService, private tokenStorageService: TokenStorageService) {
+                private notification: NotService, private tokenStorageService: TokenStorageService,
+                private roleService: RoleService, private accountService: AccountService) {
         this.returnUrl = activeRoute.snapshot.params["returnUrl"];
+
+        if (this.tokenStorageService.getAuthToken() != null)
+            this.router.navigateByUrl(settings.homeUrl);
     }
 
     login() {
@@ -41,9 +47,12 @@ export class LoginComponent {
         }
 
         this.authService.getToken(this.authModel).subscribe(
-            data => {
-                this.tokenStorageService.setToken(data);
-                this.router.navigateByUrl(this.settings.homeUrl);
+            _ => {
+                this.tokenStorageService.setToken(_);
+                this.accountService.getRoles().subscribe(data => {
+                    this.roleService.saveRole(data);
+                    this.router.navigateByUrl(this.settings.homeUrl);
+                });
             },
             error => this.notification.showNotification("error",
                 error?.error?.message ?? 'Не удалось авторизоваться'));

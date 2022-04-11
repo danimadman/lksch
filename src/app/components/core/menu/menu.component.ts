@@ -3,8 +3,8 @@ import * as settings from '../../../options/settings';
 import {Router} from "@angular/router";
 import {NotService} from "../../../services/notification.service";
 import {TokenStorageService} from "../../../services/token.service";
-import {AccountService} from "../../../services/account.service";
 import {RoleEnum} from "../../../options/enums";
+import {RoleService} from "../../../services/role.service";
 
 @Component({
     selector: 'app-menu',
@@ -14,24 +14,23 @@ import {RoleEnum} from "../../../options/enums";
 
 export class MenuComponent {
     settings = settings;
-    public roles: number[];
-    public isAdmin: boolean = false;
-    showMenu: boolean = false;
+    roles: number[];
+    isAdmin: boolean = false;
+    showMenu: boolean = true;
 
     constructor(private notification: NotService, private router: Router,
                 private tokenStorageService: TokenStorageService,
-                private accountService: AccountService) {
-        this.accountService.getRoles().subscribe(data => {
-            if (data == null)
-                return;
-            this.showMenu = true;
-            this.roles = data;
-            this.isAdmin = data.includes(RoleEnum.Admin);
-        },error => this.showMenu = false);
+                private roleService: RoleService) {
+
+        this.roles = this.roleService.getRole();
+        if (this.roles != null) {
+            this.isAdmin = this.roles.includes(RoleEnum.Admin);
+        }
     }
 
     logout() {
         this.tokenStorageService.deleteToken();
+        this.roleService.removeRole();
         this.router.navigateByUrl(this.settings.loginUrl);
     }
 }

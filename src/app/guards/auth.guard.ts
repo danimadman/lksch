@@ -4,11 +4,13 @@ import {loginUrl} from "../options/settings";
 import {AuthService} from "../services/auth.service";
 import {Injectable} from "@angular/core";
 import {TokenStorageService} from "../services/token.service";
+import {RoleService} from "../services/role.service";
 
 @Injectable()
 export class AuthGuard implements CanActivate, CanActivateChild {
 
-    constructor(private router: Router, private authService: AuthService, private tokenStorageService: TokenStorageService) {
+    constructor(private router: Router, private authService: AuthService, private tokenStorageService: TokenStorageService,
+                private roleService: RoleService) {
     }
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) : Observable<boolean> | boolean {
@@ -20,8 +22,9 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     }
 
     private checkAuthorization() : Observable<boolean> | boolean {
-        let tokens = this.tokenStorageService.getToken();
-        if (tokens == null) {
+        let token = this.tokenStorageService.getAuthToken();
+        if (token == null) {
+            this.roleService.removeRole();
             this.router.navigateByUrl(loginUrl);
         }
 

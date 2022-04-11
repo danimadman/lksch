@@ -48,6 +48,7 @@ export class StudentEvent {
     }
 
     public id: string;
+    public isNewRecord: boolean;
     public status: Dict;
     public user: UserModel;
 }

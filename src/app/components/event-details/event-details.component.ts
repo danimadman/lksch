@@ -17,6 +17,7 @@ import {State} from "@progress/kendo-data-query";
 import {UserModel} from "../../models/account";
 import {ConfirmService} from "../../services/confirm.service";
 import {DialogCloseResult} from "@progress/kendo-angular-dialog";
+import {RoleService} from "../../services/role.service";
 
 @Component({
     templateUrl: './event-details.html',
@@ -50,6 +51,7 @@ export class EventDetailsComponent implements OnInit {
 
     studentEvents: StudentEvent[];
     studentEventStatus: Dict;
+    studentEventsNewRecord: number = 0;
 
     showEventAdDetails: boolean = false;
     eventAd: EventAd;
@@ -65,7 +67,7 @@ export class EventDetailsComponent implements OnInit {
     constructor(private notification: NotService, private router: Router, private activateRoute: ActivatedRoute,
                 private eventsService: EventsService, private accountService: AccountService,
                 private dictService: DictService, private fileService: FileService,
-                private confirmService: ConfirmService) {
+                private confirmService: ConfirmService, private roleService: RoleService) {
         this.eventId = activateRoute.snapshot.params["id"];
         activateRoute.queryParams.subscribe(x => {
             if (x.ReturnUrl != undefined)
@@ -77,10 +79,10 @@ export class EventDetailsComponent implements OnInit {
         this.accountService.getUser().subscribe(data => {
             this.user = data;
         });
-        this.accountService.getRoles().subscribe(data => {
-            this.roles = data;
-            this.allowEdit = this.isAdmin = data.includes(RoleEnum.Admin);
-        });
+
+        this.roles = this.roleService.getRole();
+        if (this.roles != null)
+            this.allowEdit = this.isAdmin = this.roles.includes(RoleEnum.Admin);
 
         this.getEventTypes();
         this.getEventStatuses();
@@ -162,6 +164,7 @@ export class EventDetailsComponent implements OnInit {
             case 1:
                 if (!this.isAdmin)
                     return;
+                this.studentEventRecordRead();
                 break;
             case 2:
                 break;
@@ -294,6 +297,7 @@ export class EventDetailsComponent implements OnInit {
         this.eventsService.getStudentEvents(this.eventDetails.id).subscribe(
             data =>  {
                 this.studentEvents = data;
+                this.studentEventsNewRecord = data?.filter(x => x.isNewRecord)?.length ?? 0;
                 this.studentEventStatus = data?.find(x => x.user?.id == this.user?.id)?.status;
             },
             error => this.notification.showNotification("error",
@@ -346,6 +350,17 @@ export class EventDetailsComponent implements OnInit {
                 this.notification.showNotification("success", 'Статус обновлен');
             },error => this.notification.showNotification("error",
                 error?.error?.message ?? 'Произошла ошибка во время обновления статуса'));
+    }
+
+    studentEventRecordRead() {
+        if (!this.isAdmin || this.studentEvents == null)
+            return;
+
+        for (let i = 0; i < this.studentEvents.length; i++) {
+            if (this.studentEvents[i].isNewRecord) {
+                this.eventsService.studentEventRecordRead(this.studentEvents[i].id);
+            }
+        }
     }
 
     /* -------------- EVENT ADS -------------- */

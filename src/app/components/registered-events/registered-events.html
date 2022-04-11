@@ -3,19 +3,22 @@
     <button kendoButton fillMode="solid" themeColor="primary" class="k-mb-3" (click)="allEvents()">
         Все мероприятия
     </button>
-    <kendo-grid [pageSize]="20" [pageable]="true" [sortable]="true" [columnMenu]="{ filter: true }"
-                [kendoGridBinding]="events" style="width: 100%;" (cellClick)="cellClick($event)" [loading]="gridLoading">
-        <kendo-grid-column field="name" title="Название" [resizable]="true" filter="text">
+    <kendo-grid [pageSize]="20" [pageable]="true" [sortable]="true" [columnMenu]="true"  [loading]="gridLoading"
+                [kendoGridBinding]="events" [filterable]="true"
+                (cellClick)="cellClick($event)"
+                scrollable="virtual"  style="width: 100%;">
+        <kendo-grid-column field="name" title="Название" [resizable]="true" filter="text" width="370">
         </kendo-grid-column>
-        <kendo-grid-column title="Срок проведения" [resizable]="true" filter="text">
+        <kendo-grid-column title="Срок проведения" [resizable]="true" [filterable]="false" width="210"
+                           class="text-center">
             <ng-template kendoGridCellTemplate let-dataItem>
                 с {{dataItem.dateBegin.toLocaleDateString("ru-RU")}}
                 по {{dataItem.dateEnd.toLocaleDateString("ru-RU")}}
             </ng-template>
         </kendo-grid-column>
-        <kendo-grid-column field="typeName" title="Мероприятие" [resizable]="true" filter="text">
+        <kendo-grid-column field="typeName" title="Мероприятие" [resizable]="true" filter="text" width="180">
         </kendo-grid-column>
-        <kendo-grid-column field="statusName" title="Статус" [resizable]="true" filter="text">
+        <kendo-grid-column field="statusName" title="Статус" [resizable]="true" filter="text" width="140">
         </kendo-grid-column>
     </kendo-grid>
 </div>
