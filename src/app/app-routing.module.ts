@@ -41,7 +41,7 @@ const routes: Routes = [
     { path: 'Account/Login', component: LoginComponent },
     { path: 'Account/ForgotPassword', component: ForgotPasswordComponent },
     { path: 'Account/ResendEmailConfirmation', component: ResendEmailConfirmComponent },
-    { path: 'Account/ResetPassword/:code', component: ResetPasswordComponent },
+    { path: 'Account/ResetPassword', component: ResetPasswordComponent },
     { path: 'Register', component: RegisterComponent },
     { path: 'Register/ConfirmEmail', component: RegisterConfirmComponent },
     { path: "**", redirectTo: '/', pathMatch: "full" }

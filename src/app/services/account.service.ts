@@ -48,10 +48,7 @@ export class AccountService {
     }
 
     getUser(): Observable<UserModel> {
-        return this.http.get(`${this.url}/GetUser`).pipe(
-            map((data: UserModel) => data),
-            catchError(err => throwError(err))
-        );
+        return this.http.get<UserModel>(`${this.url}/GetUser`);
     }
 
     registration(registerModel: RegisterModel): Observable<boolean> {

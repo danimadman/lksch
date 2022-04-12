@@ -17,7 +17,6 @@ export class AuthService {
     }
 
     getToken(authData: AuthModel) : Observable<any> {
-        //this.tokenStorageService.deleteToken();
         return this.http.post(`${this.url}/GetToken`, authData, {
             withCredentials: true
         }).pipe(map((data: any) => data))
@@ -25,8 +24,7 @@ export class AuthService {
 
     refreshToken() : Observable<AuthTokens> {
         let refreshToken = this.tokenStorageService.getRefreshToken();
-        //console.log(refreshToken);
-        //this.tokenStorageService.deleteToken();
+
         return this.http.post(`${this.url}/RefreshToken`, {
             refreshToken: refreshToken
         },{

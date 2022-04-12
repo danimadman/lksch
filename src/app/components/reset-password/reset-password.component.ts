@@ -31,7 +31,13 @@ export class ResetPasswordComponent {
 
     constructor(private accountService: AccountService, private notification: NotService, 
                 private activatedRoute: ActivatedRoute) {
-        this.resetPasswordModel.code = activatedRoute.snapshot.params["code"];
+        //this.resetPasswordModel.code = activatedRoute.snapshot.params["code"];
+        //this.resetPasswordModel.code =
+        console.log(activatedRoute.queryParams);
+        activatedRoute.queryParams.subscribe(x => {
+            if (x.code != undefined)
+                this.resetPasswordModel.code = x.code;
+        })
     }
 
     send() {
