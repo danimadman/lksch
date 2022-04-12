@@ -23,7 +23,7 @@
   z-index: 1000;
   margin: 0 !important;
   background-color: #2e486e;
-  border-radius: 0;
+  border-radius: 4px;
   display: none;
 }
 #left-menu .menu-list {
@@ -67,7 +67,7 @@
 @media (max-width: 990px) {
   #left-menu {
     position: absolute;
-    right: 32px;
+    right: 17px;
   }
 }
 @media (min-width: 767px) {
