@@ -6,7 +6,7 @@
     <kendo-grid [pageSize]="20" [pageable]="true" [sortable]="true" [columnMenu]="true"
                 [kendoGridBinding]="courses" [loading]="gridLoading" [filterable]="true"
                 (cellClick)="cellClick($event)"
-                scrollable="virtual" style="width: 100%;">
+                scrollable="virtual" style="width: 100%; display: grid;">
         <kendo-grid-column field="name" title="Название" [resizable]="true" filter="text" width="370">
         </kendo-grid-column>
         <kendo-grid-column title="Срок проведения" [resizable]="true" [filterable]="false" width="210" class="text-center">
