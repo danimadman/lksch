@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {homeUrl} from "../../../options/settings";
 
 declare var $: any;
@@ -10,6 +10,8 @@ declare var $: any;
 })
 export class HeaderComponent implements OnInit {
     homeUrl: string = homeUrl;
+
+    @Input() showBtnMenu: boolean = true;
 
     constructor() {
     }

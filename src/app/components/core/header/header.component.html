@@ -3,14 +3,12 @@
         <div class="logo display-flex align-items-center flex-nowrap">
             <a [routerLink]="homeUrl"><img src="/assets/Images/logo.png" alt="Личный кабинет школьника"></a>
             <div class="logo-name">
-                <span class="h1 hidden-xs hidden-sm">Личный кабинет школьника</span>
-                <span class="h2 hidden-xs hidden-sm">ПРИВОЛЖСКОГО ИССЛЕДОВАТЕЛЬСКОГО МЕДИЦИНСКОГО УНИВЕРСИТЕТА</span>
-                <span class="h2 hidden-md hidden-lg">Личный кабинет<br/>школьника ПИМУ</span>
+                <span class="h1">Личный кабинет школьника ПИМУ</span>
             </div>
         </div>
-        <button id="btn-left-menu" type="button" title="Показать меню"
-                class="btn btn-clipboard hidden-md hidden-lg onresize-left_positioning">
-            <span class="k-icon k-i-menu" style="left: 0; font-size: 26px;" aria-hidden="true"></span>
+        <button id="btn-left-menu" type="button" title="Показать меню" class="hidden-md hidden-lg navbar-toggler"
+                [style]="showBtnMenu ? 'display: flex;' : 'display: none;'">
+            <span class="navbar-icon"></span>
         </button>
     </div>
 </header>

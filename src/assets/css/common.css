@@ -829,9 +829,9 @@ html {
 
 body {
     margin: 0;
-    padding: 26px 32px;
+    padding: 11px 17px;
     box-sizing: content-box;
-    min-width: 380px;
+    min-width: 300px;
     font-family: Calibri,sans-serif;
     font-size: 18px;
     line-height: 1.42857143;

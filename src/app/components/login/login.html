@@ -16,11 +16,11 @@
                 <kendo-formerror *ngIf="form.controls.password.errors?.required">Заполните пароль от своей учётной записи
                 </kendo-formerror>
             </kendo-formfield>
-            <div class="k-display-flex k-justify-content-center k-mb-3 k-mt-3">
-                <button class="btn btn-default" (click)="login()">Вход</button>
-                <button class="btn btn-secondary k-ml-1" (click)="registerForm()">Зарегистрироваться</button>
+            <div class="k-display-flex k-justify-content-center k-flex-wrap k-mb-2 k-mt-2">
+                <button class="btn btn-default k-mt-1" (click)="login()">Вход</button>
+                <button class="btn btn-secondary k-ml-1 k-mt-1" (click)="registerForm()">Зарегистрироваться</button>
             </div>
-            <div class="k-display-flex k-align-items-center k-flex-column">
+            <div class="k-display-flex k-align-items-center k-flex-column text-center">
                 <a [routerLink]="settings.forgotPasswordUrl" class="login-link">Забыли пароль?</a>
                 <a [routerLink]="settings.resendEmailConfirmUrl" class="login-link">Заново выслать код подтверждения e-mail</a>
             </div>
